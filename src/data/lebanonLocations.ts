@@ -1,0 +1,296 @@
+import { LebaneseDistrict, LebaneseGovernorate } from '../types';
+
+export const CURRENT_USD_LBP_RATE = 89500;
+export const FLAT_RATE_INSIDE_BEIRUT_USD = 3.0;
+export const FLAT_RATE_OUTSIDE_BEIRUT_USD = 4.0;
+
+export const getFlatDeliveryFeeUsd = (governorate: string): number => {
+  return governorate === 'Beirut' ? FLAT_RATE_INSIDE_BEIRUT_USD : FLAT_RATE_OUTSIDE_BEIRUT_USD;
+};
+
+export const LEBANESE_GOVERNORATES: LebaneseGovernorate[] = [
+  'Beirut',
+  'Mount Lebanon',
+  'North',
+  'South',
+  'Bekaa',
+  'Nabatieh',
+  'Akkar',
+  'Baalbek-Hermel',
+];
+
+export const LEBANESE_DISTRICTS: LebaneseDistrict[] = [
+  // Beirut - $3 Flat
+  {
+    id: 'bey_central',
+    name: 'Beirut - Central & Downtown (Achrafieh, Downtown, Mar Mikhael, Gemmayze)',
+    arabicName: 'بيروت - الأشرفية ووسط البلد',
+    governorate: 'Beirut',
+    zone: 'Zone 1 (Greater Beirut)',
+    standardEtaHours: 24,
+    expressAvailable: true,
+    baseDeliveryUsd: 3.0,
+    baseDeliveryLbp: 270000,
+  },
+  {
+    id: 'bey_west',
+    name: 'Beirut - West (Hamra, Verdun, Raouche, Koreitem, UNESCO)',
+    arabicName: 'بيروت - الحمرا، فردان، الروشة',
+    governorate: 'Beirut',
+    zone: 'Zone 1 (Greater Beirut)',
+    standardEtaHours: 24,
+    expressAvailable: true,
+    baseDeliveryUsd: 3.0,
+    baseDeliveryLbp: 270000,
+  },
+  {
+    id: 'bey_south',
+    name: 'Beirut - Badaro, Mazraa, Furn El Chebbak, Tayyouneh',
+    arabicName: 'بيروت - بدارو، المزرعة، فرن الشباك',
+    governorate: 'Beirut',
+    zone: 'Zone 1 (Greater Beirut)',
+    standardEtaHours: 24,
+    expressAvailable: true,
+    baseDeliveryUsd: 3.0,
+    baseDeliveryLbp: 270000,
+  },
+
+  // Outside Beirut - $4 Flat Across Mount Lebanon
+  {
+    id: 'mtn_lower',
+    name: 'Metn Coast (Sin El Fil, Dekwaneh, Jdeideh, Antelias, Dbayeh)',
+    arabicName: 'المتن الساحلي - سن الفيل، جديدة، انطلياس، ضبية',
+    governorate: 'Mount Lebanon',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: true,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+  {
+    id: 'mtn_upper',
+    name: 'Metn Heights (Mansourieh, Beit Mery, Broummana, Bikfaya)',
+    arabicName: 'المتن الأعلى - المنصورية، برمانا، بكفيا',
+    governorate: 'Mount Lebanon',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+
+  // Keserwan - $4 Flat
+  {
+    id: 'ksr_coast',
+    name: 'Keserwan Coast (Zouk Mosbeh, Zouk Mikael, Jounieh, Kaslik, Sarba)',
+    arabicName: 'كسروان الساحل - ذوق مصبح، جونية، الكسليك',
+    governorate: 'Mount Lebanon',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: true,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+  {
+    id: 'ksr_upper',
+    name: 'Keserwan Heights (Ghazir, Harissa, Ajaltoun, Faraya)',
+    arabicName: 'كسروان الجبل - غزير، حريصا، عجلتون، فاريا',
+    governorate: 'Mount Lebanon',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+
+  // Baabda & Hazmieh - $4 Flat
+  {
+    id: 'baabda_hazmieh',
+    name: 'Baabda & Hazmieh (Hazmieh, Baabda, Hadath, Yarzeh)',
+    arabicName: 'بعبدا والحازمية - الحدث، الحازمية، بعبدا',
+    governorate: 'Mount Lebanon',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: true,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+
+  // Aley & Chouf - $4 Flat
+  {
+    id: 'aley',
+    name: 'Aley District (Aley, Bhamdoun, Souk El Gharb, Khaldeh)',
+    arabicName: 'عاليه - بحمدون، سوق الغرب، خلدة',
+    governorate: 'Mount Lebanon',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+  {
+    id: 'chouf',
+    name: 'Chouf District (Damour, Naameh, Deir El Qamar, Beiteddine)',
+    arabicName: 'الشوف - الدامور، دير القمر، بيت الدين',
+    governorate: 'Mount Lebanon',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+
+  // North Lebanon - $4 Flat
+  {
+    id: 'north_tripoli',
+    name: 'Tripoli City & Mina (Tripoli, Mina, Qalamoun)',
+    arabicName: 'طرابلس والميناء والقلمون',
+    governorate: 'North',
+    zone: 'Zone 3 (Regional / Coastal)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+  {
+    id: 'north_batroun',
+    name: 'Batroun & Chekka Coastal District',
+    arabicName: 'البترون وشكا',
+    governorate: 'North',
+    zone: 'Zone 2 (Mount Lebanon)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+  {
+    id: 'north_koura_zgharta',
+    name: 'Koura & Zgharta (Amioun, Ehden, Zgharta)',
+    arabicName: 'الكورة وزغرتا - إهدن، أميون',
+    governorate: 'North',
+    zone: 'Zone 3 (Regional / Coastal)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+
+  // South Lebanon - $4 Flat
+  {
+    id: 'south_saida',
+    name: 'Saida (Sidon) & Surrounding Coast (Ghazieh, Maghdouche)',
+    arabicName: 'صيدا وضواحيها - الغازية، مغدوشة',
+    governorate: 'South',
+    zone: 'Zone 3 (Regional / Coastal)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+  {
+    id: 'south_tyre',
+    name: 'Tyre (Sour) & Coastal Villages',
+    arabicName: 'صور وقرى الساحل الجنوبي',
+    governorate: 'South',
+    zone: 'Zone 3 (Regional / Coastal)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+
+  // Bekaa - $4 Flat
+  {
+    id: 'bekaa_zahle',
+    name: 'Zahle & Chtaura District (Zahle, Chtaura, Saadnayel)',
+    arabicName: 'زحلة وشتورا وسعدنايل',
+    governorate: 'Bekaa',
+    zone: 'Zone 3 (Regional / Coastal)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+  {
+    id: 'bekaa_west',
+    name: 'West Bekaa (Joub Jannine, Qaraoun, Jeb Jennine)',
+    arabicName: 'البقاع الغربي - جب جنين، القرعون',
+    governorate: 'Bekaa',
+    zone: 'Zone 4 (Remote / Mountain)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+
+  // Nabatieh - $4 Flat
+  {
+    id: 'nabatieh_city',
+    name: 'Nabatieh City & District',
+    arabicName: 'النبطية والقرى المجاورة',
+    governorate: 'Nabatieh',
+    zone: 'Zone 3 (Regional / Coastal)',
+    standardEtaHours: 24,
+    expressAvailable: false,
+    baseDeliveryUsd: 4.0,
+    baseDeliveryLbp: 360000,
+  },
+];
+
+export const RT_LOGISTICS_HUBS = [
+  {
+    id: 'hub_bey',
+    name: 'Beirut Central Sorting & Fulfillment Hub',
+    address: 'Corniche El Nahr, Near Sin El Fil Bridge, Beirut',
+    governorate: 'Beirut',
+    phone: '+961 1 480 220',
+    mobileWhatsapp: '+961 71 892 411',
+    hours: 'Mon - Sat: 8:00 AM - 8:00 PM',
+    type: 'Main Mega Hub & Fulfillment Warehouse',
+    facilities: ['Thermal Label Printing', 'Cold Pack Storage', 'COD Safe Deposit Box', 'Pick & Pack Station'],
+  },
+  {
+    id: 'hub_ksr',
+    name: 'Mount Lebanon & Keserwan Transit Station',
+    address: 'Zouk Mosbeh Main Industrial Road, Keserwan',
+    governorate: 'Mount Lebanon',
+    phone: '+961 9 221 890',
+    mobileWhatsapp: '+961 70 334 118',
+    hours: 'Mon - Sat: 8:30 AM - 6:30 PM',
+    type: 'Regional Dispatch & Courier Base',
+    facilities: ['Last-Mile Motorbike Fleet', 'Exchange Processing', 'Customer Self-Pickup'],
+  },
+  {
+    id: 'hub_nth',
+    name: 'North Lebanon Hub (Tripoli)',
+    address: 'Al Mina Highway, Tripoli, North Lebanon',
+    governorate: 'North',
+    phone: '+961 6 422 105',
+    mobileWhatsapp: '+961 76 991 204',
+    hours: 'Mon - Sat: 9:00 AM - 6:00 PM',
+    type: 'Regional Cross-Dock',
+    facilities: ['Daily Beirut Shuttle Line', 'COD Collection Desk', 'Express Dispatch'],
+  },
+  {
+    id: 'hub_sth',
+    name: 'South Lebanon Hub (Saida)',
+    address: 'Eastern Boulevard, Near Nejmeh Square, Saida',
+    governorate: 'South',
+    phone: '+961 7 730 411',
+    mobileWhatsapp: '+961 70 551 902',
+    hours: 'Mon - Sat: 9:00 AM - 6:00 PM',
+    type: 'Regional Cross-Dock',
+    facilities: ['Tyre & Nabatieh Feeder Line', 'Cash Verification Desk', 'Return Sorting'],
+  },
+  {
+    id: 'hub_bka',
+    name: 'Bekaa Valley Distribution Hub (Chtaura)',
+    address: 'Damascus International Road, Chtaura Center',
+    governorate: 'Bekaa',
+    phone: '+961 8 541 220',
+    mobileWhatsapp: '+961 71 448 912',
+    hours: 'Mon - Sat: 9:00 AM - 5:30 PM',
+    type: 'Regional Distribution Center',
+    facilities: ['Daily Mountain Run', 'Agri & Retail Deliveries', 'Same-Day Cross-Border Buffer'],
+  },
+];
