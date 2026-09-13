@@ -13,7 +13,15 @@ import {
   Boxes,
   Zap,
   MapPin,
-  Laptop
+  Laptop,
+  Home,
+  Truck,
+  Warehouse,
+  Globe,
+  Images,
+  HelpCircle,
+  Clock,
+  DollarSign
 } from 'lucide-react';
 import { CURRENT_USD_LBP_RATE } from '../data/lebanonLocations';
 
@@ -32,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectSection,
   activeSection,
 }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [quickWaybill, setQuickWaybill] = useState('');
   const [scrolled, setScrolled] = useState(false);
 
@@ -44,25 +52,101 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close drawer on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && menuOpen) {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
+
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [menuOpen]);
+
   const handleQuickTrack = (e: React.FormEvent) => {
     e.preventDefault();
     if (quickWaybill.trim()) {
       onOpenTracking(quickWaybill.trim().toUpperCase());
       setQuickWaybill('');
-      setMobileMenuOpen(false);
+      setMenuOpen(false);
     }
   };
 
   const navItems = [
-    { id: 'home', label: 'Home', badge: null },
-    { id: 'services', label: 'Pricing & Services', badge: '$3 / $4' },
-    { id: 'warehousing', label: 'Warehousing', badge: null },
-    { id: 'merchant-portal', label: 'Merchant Platform', badge: 'Laravel' },
-    { id: 'coverage', label: 'Lebanon Coverage', badge: '100%' },
-    { id: 'about', label: 'About & Gallery', badge: null },
-    { id: 'tracking', label: 'Live Tracking', badge: 'Live' },
-    { id: 'contact', label: 'Contact & FAQ', badge: null },
+    { 
+      id: 'home', 
+      label: 'Home Cockpit', 
+      sublabel: 'Main overview & telemetry',
+      icon: Home,
+      badge: null 
+    },
+    { 
+      id: 'services', 
+      label: 'Pricing & Services', 
+      sublabel: '$3 Beirut / $4 All Lebanon',
+      icon: Truck,
+      badge: '$3 / $4 Flat' 
+    },
+    { 
+      id: 'warehousing', 
+      label: 'Warehousing & Storage', 
+      sublabel: '1,500 m² Corniche El Nahr facility',
+      icon: Warehouse,
+      badge: 'Fulfillment' 
+    },
+    { 
+      id: 'merchant-portal', 
+      label: 'Merchant Platform', 
+      sublabel: 'Shopify sync & COD ledgers',
+      icon: Laptop,
+      badge: 'app.rtdeliveries.net' 
+    },
+    { 
+      id: 'coverage', 
+      label: 'Lebanon Coverage', 
+      sublabel: 'All 8 Governorates & 26 Districts',
+      icon: Globe,
+      badge: '100% Reach' 
+    },
+    { 
+      id: 'about', 
+      label: 'Fleet & Facility Gallery', 
+      sublabel: 'Vans, motos, and warehouse floor',
+      icon: Images,
+      badge: null 
+    },
+    { 
+      id: 'tracking', 
+      label: 'Live Waybill Tracking', 
+      sublabel: 'Real-time telemetry portal',
+      icon: Radio,
+      badge: 'Live Radar' 
+    },
+    { 
+      id: 'contact', 
+      label: 'Contact & Lebanese FAQ', 
+      sublabel: 'Hotline, dispatch desk, and support',
+      icon: HelpCircle,
+      badge: null 
+    },
   ];
+
+  const handleNavClick = (id: string) => {
+    onSelectSection(id);
+    setMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300">
@@ -125,21 +209,21 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Main Dynamic Island Header */}
-      <div className={`px-3 sm:px-6 py-2 transition-all duration-300 ${scrolled ? 'bg-slate-950/95 backdrop-blur-xl shadow-2xl border-b border-slate-800/80' : 'bg-slate-950/80 backdrop-blur-md border-b border-slate-900'}`}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      {/* Main Single-Line Header (NEVER wraps into two lines) */}
+      <div className={`px-3 sm:px-6 py-2.5 transition-all duration-300 ${scrolled ? 'bg-[#070b14]/95 backdrop-blur-xl shadow-2xl border-b border-slate-800/90' : 'bg-[#070b14]/85 backdrop-blur-md border-b border-slate-800/60'}`}>
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6">
           
-          {/* Logo Brand Mark */}
+          {/* Brand Logo & Title */}
           <button
             onClick={() => onSelectSection('home')}
-            className="flex items-center gap-3 text-left group focus:outline-hidden py-1 cursor-pointer"
+            className="flex items-center gap-2.5 sm:gap-3 text-left group focus:outline-hidden py-1 cursor-pointer shrink-0"
             aria-label="RT Deliveries Home"
           >
-            <div className="relative p-1 rounded-xl bg-slate-900 border border-slate-800 group-hover:border-orange-500/50 transition-colors shadow-inner">
+            <div className="relative p-1 rounded-xl bg-slate-900 border border-slate-800 group-hover:border-orange-500/50 transition-colors shadow-inner shrink-0">
               <img
                 src="/brand/rt-logo.png"
                 alt="RT Deliveries Lebanon"
-                className="h-9 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = 'https://rtdeliveries.net/wp-content/uploads/2025/10/3-768x456.jpeg';
@@ -147,9 +231,9 @@ export const Header: React.FC<HeaderProps> = ({
               />
             </div>
 
-            <div className="hidden sm:block">
+            <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-display font-black text-lg text-white tracking-tight leading-none group-hover:text-orange-400 transition-colors">
+                <span className="font-display font-black text-base sm:text-lg text-white tracking-tight leading-none group-hover:text-orange-400 transition-colors">
                   ROAD TRAIN
                 </span>
                 <span className="px-1.5 py-0.2 rounded bg-orange-600 text-white text-[9px] font-mono-tech font-bold uppercase">
@@ -162,175 +246,259 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </button>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800/80 shadow-inner">
-            {navItems.map((item) => {
-              const isActive = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => onSelectSection(item.id)}
-                  className={`relative px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                    isActive
-                      ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                  }`}
-                >
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono-tech uppercase font-bold ${
-                      isActive ? 'bg-black/30 text-white' : 'bg-slate-800 text-orange-400 border border-slate-700'
-                    }`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
+          {/* Quick Active Section Pill (Visible on md+ screens) */}
+          <div className="hidden lg:flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800/80 text-xs font-mono-tech">
+            <span className="text-slate-500 font-medium">VIEWING:</span>
+            <span className="text-orange-400 font-bold uppercase">
+              {navItems.find(n => n.id === activeSection)?.label || 'Home'}
+            </span>
+          </div>
 
-          {/* Right Action Stack */}
-          <div className="flex items-center gap-2.5">
-            {/* Quick Track Input Pill */}
+          {/* Right Action Stack with Burger Menu ALWAYS VISIBLE */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            
+            {/* Quick Track Input Pill (Medium+ screens) */}
             <form onSubmit={handleQuickTrack} className="hidden md:flex items-center relative">
               <input
                 type="text"
                 value={quickWaybill}
                 onChange={(e) => setQuickWaybill(e.target.value)}
                 placeholder="Track Waybill..."
-                className="w-36 lg:w-44 pl-8 pr-3 py-1.5 bg-slate-900/90 border border-slate-700/80 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono-tech focus:outline-hidden focus:border-orange-500 focus:w-48 transition-all shadow-inner uppercase"
+                className="w-32 lg:w-40 pl-8 pr-3 py-2 bg-slate-900/90 border border-slate-700/80 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono-tech focus:outline-hidden focus:border-orange-500 focus:w-48 transition-all shadow-inner uppercase"
               />
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none" />
-              <button
-                type="submit"
-                className="sr-only"
-                aria-label="Submit Tracking"
-              >
-                Track
-              </button>
             </form>
 
-            {/* Quick Track Action Button */}
+            {/* Quick Track Button (Mobile or as compact trigger) */}
             <button
               onClick={() => onOpenTracking()}
-              className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
-              title="Open Track & Trace"
+              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+              title="Track Waybill"
             >
-              <Search className="w-3.5 h-3.5 text-orange-400" />
-              <span className="hidden sm:inline">Track</span>
+              <Search className="w-4 h-4 text-orange-400" />
+              <span className="hidden sm:inline font-mono-tech">Track</span>
             </button>
 
-            {/* Schedule Pickup CTA */}
+            {/* Schedule Pickup CTA Button */}
             <button
               onClick={onOpenPickup}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/30 transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/30 transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <Zap className="w-3.5 h-3.5" />
-              <span>Book Pickup</span>
+              <span className="hidden xs:inline sm:inline">Book Pickup</span>
+              <span className="xs:hidden sm:hidden">Book</span>
             </button>
 
-            {/* Mobile Menu Toggle */}
+            {/* BURGER MENU BUTTON — ALWAYS ACTIVE ON ALL SCREEN SIZES */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
-              aria-label="Toggle Menu"
+              onClick={() => setMenuOpen(true)}
+              className="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white border border-slate-700/80 hover:border-orange-500/60 transition-all cursor-pointer shadow-sm group focus:outline-hidden focus:ring-2 focus:ring-orange-500/50"
+              aria-label="Open Navigation Drawer"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <div className="w-5 h-5 flex flex-col justify-center gap-1">
+                <span className="w-5 h-0.5 bg-orange-400 rounded-full group-hover:bg-white transition-colors" />
+                <span className="w-3.5 h-0.5 bg-white rounded-full group-hover:w-5 transition-all" />
+                <span className="w-5 h-0.5 bg-orange-400 rounded-full group-hover:bg-white transition-colors" />
+              </div>
+              <span className="font-bold text-xs font-mono-tech tracking-wider uppercase hidden sm:inline text-slate-200 group-hover:text-white">
+                Menu
+              </span>
             </button>
+
           </div>
 
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="xl:hidden bg-[#0a0f1d] border-b border-slate-800 px-4 py-6 space-y-5 shadow-2xl animate-in slide-in-from-top-2 duration-200">
-          {/* Mobile Track Input */}
-          <form onSubmit={handleQuickTrack} className="flex gap-2">
-            <div className="relative flex-1">
-              <input
-                type="text"
-                value={quickWaybill}
-                onChange={(e) => setQuickWaybill(e.target.value)}
-                placeholder="Enter Waybill (e.g. RT-8942-BEY)"
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono-tech uppercase focus:outline-hidden focus:border-orange-500"
-              />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-            </div>
-            <button
-              type="submit"
-              className="px-4 py-2.5 bg-orange-600 text-white font-bold text-xs rounded-xl"
-            >
-              Track
-            </button>
-          </form>
+      {/* SLIDE-OVER NAVIGATION DRAWER (ACTIVE ON ALL SCREEN SIZES) */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden animate-in fade-in duration-200">
+          {/* Dark frosted backdrop */}
+          <div 
+            onClick={() => setMenuOpen(false)}
+            className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
+            aria-hidden="true"
+          />
 
-          {/* Navigation Links Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {navItems.map((item) => {
-              const isActive = activeSection === item.id;
-              return (
+          {/* Drawer Container */}
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div className="w-screen max-w-md bg-[#070b14] border-l border-slate-800 shadow-2xl flex flex-col text-white animate-in slide-in-from-right duration-200">
+              
+              {/* Drawer Top Header */}
+              <div className="p-5 sm:p-6 bg-[#090e1a] border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-1 rounded-xl bg-slate-900 border border-slate-800">
+                    <img
+                      src="/brand/rt-logo.png"
+                      alt="RT Deliveries"
+                      className="h-8 w-auto object-contain"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://rtdeliveries.net/wp-content/uploads/2025/10/3-768x456.jpeg';
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-display font-black text-sm text-white tracking-tight">
+                      RT Deliveries Menu
+                    </h3>
+                    <p className="text-[11px] text-slate-400 font-mono-tech">
+                      Lebanon Logistics Command
+                    </p>
+                  </div>
+                </div>
+
                 <button
-                  key={item.id}
-                  onClick={() => {
-                    onSelectSection(item.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`flex items-center justify-between p-3 rounded-xl text-left text-xs font-bold transition-all ${
-                    isActive
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-slate-900/80 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-800/80'
-                  }`}
+                  onClick={() => setMenuOpen(false)}
+                  className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800 transition-colors cursor-pointer"
+                  aria-label="Close navigation menu"
                 >
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-orange-400 font-mono-tech">
-                      {item.badge}
-                    </span>
-                  )}
+                  <X className="w-5 h-5" />
                 </button>
-              );
-            })}
-          </div>
+              </div>
 
-          {/* Mobile Action Buttons */}
-          <div className="pt-2 border-t border-slate-800 grid grid-cols-2 gap-2">
-            <button
-              onClick={() => {
-                onOpenPickup();
-                setMobileMenuOpen(false);
-              }}
-              className="py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs text-center flex items-center justify-center gap-1.5"
-            >
-              <Zap className="w-3.5 h-3.5" />
-              <span>Schedule Pickup</span>
-            </button>
-            <button
-              onClick={() => {
-                onOpenPartner();
-                setMobileMenuOpen(false);
-              }}
-              className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-xs text-center"
-            >
-              Partner With Us
-            </button>
-          </div>
+              {/* Quick Search inside Drawer */}
+              <div className="p-4 sm:p-5 bg-slate-950/60 border-b border-slate-800">
+                <form onSubmit={handleQuickTrack} className="flex gap-2 font-mono-tech">
+                  <div className="relative flex-1">
+                    <input
+                      type="text"
+                      value={quickWaybill}
+                      onChange={(e) => setQuickWaybill(e.target.value)}
+                      placeholder="Waybill (e.g. RT-8942-BEY)"
+                      className="w-full pl-9 pr-3 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-xs text-white placeholder:text-slate-500 uppercase focus:outline-hidden focus:border-orange-500 shadow-inner"
+                    />
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer font-sans"
+                  >
+                    Track
+                  </button>
+                </form>
+              </div>
 
-          {/* Laravel Direct Link Banner */}
-          <a
-            href="https://app.rtdeliveries.net/login"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white"
-          >
-            <div className="flex items-center gap-2">
-              <Laptop className="w-4 h-4 text-orange-400" />
-              <span>Merchant Portal (app.rtdeliveries.net)</span>
+              {/* Navigation Items List */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-1.5">
+                <div className="text-[10px] font-mono-tech uppercase font-bold text-slate-500 tracking-wider px-3 pb-1">
+                  Navigation Directory
+                </div>
+
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.id;
+                  const IconComponent = item.icon;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item.id)}
+                      className={`w-full p-3 rounded-2xl text-left transition-all flex items-center justify-between group cursor-pointer border ${
+                        isActive
+                          ? 'bg-orange-600/15 border-orange-500/50 text-white shadow-inner'
+                          : 'bg-slate-900/50 border-slate-800/80 text-slate-300 hover:bg-slate-800/80 hover:text-white hover:border-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
+                          isActive
+                            ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30'
+                            : 'bg-slate-800 text-slate-400 group-hover:text-orange-400 group-hover:bg-slate-700'
+                        }`}>
+                          <IconComponent className="w-4 h-4" />
+                        </div>
+
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-display font-bold text-sm text-white">
+                              {item.label}
+                            </span>
+                            {item.badge && (
+                              <span className={`text-[9px] px-2 py-0.2 rounded-full font-mono-tech font-bold uppercase ${
+                                isActive 
+                                  ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' 
+                                  : 'bg-slate-800 text-slate-400 border border-slate-700'
+                              }`}>
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[11px] text-slate-400 block mt-0.5 font-sans">
+                            {item.sublabel}
+                          </span>
+                        </div>
+                      </div>
+
+                      <ChevronRight className={`w-4 h-4 transition-transform ${
+                        isActive ? 'text-orange-400 translate-x-0.5' : 'text-slate-600 group-hover:text-white group-hover:translate-x-0.5'
+                      }`} />
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Action Buttons & Hotline Footer */}
+              <div className="p-4 sm:p-5 bg-[#090e1a] border-t border-slate-800 space-y-3 shrink-0">
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => {
+                      onOpenPickup();
+                      setMenuOpen(false);
+                    }}
+                    className="py-3 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-lg shadow-orange-600/20"
+                  >
+                    <Zap className="w-3.5 h-3.5" />
+                    <span>Book Pickup</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      onOpenPartner();
+                      setMenuOpen(false);
+                    }}
+                    className="py-3 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-colors cursor-pointer text-center"
+                  >
+                    Merchant Partner
+                  </button>
+                </div>
+
+                {/* External Portal Link */}
+                <a
+                  href="https://app.rtdeliveries.net/login"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-orange-500/40 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <Laptop className="w-4 h-4 text-orange-400" />
+                    <span className="font-mono-tech">Merchant Portal (app.rtdeliveries.net)</span>
+                  </div>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                </a>
+
+                {/* Dispatch Support Row */}
+                <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono-tech text-slate-400">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Corniche El Nahr Hub</span>
+                  </div>
+
+                  <a
+                    href="https://wa.me/96171892411"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-emerald-400 hover:underline flex items-center gap-1 font-bold"
+                  >
+                    <MessageSquare className="w-3 h-3" />
+                    <span>+961 71 892 411</span>
+                  </a>
+                </div>
+              </div>
+
             </div>
-            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
-          </a>
+          </div>
         </div>
       )}
     </header>
   );
 };
+

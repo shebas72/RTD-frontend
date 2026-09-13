@@ -16,6 +16,7 @@ import {
   Tag
 } from 'lucide-react';
 import { RateCalculator } from '../components/RateCalculator';
+import { ServicesSlider } from '../components/ServicesSlider';
 import { CodCashFlowInfographic } from '../components/infographics/CodCashFlowInfographic';
 import { PricingInfographic } from '../components/infographics/PricingInfographic';
 import { ComparisonSection } from '../components/ComparisonSection';
@@ -49,6 +50,20 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         </div>
       </section>
 
+      {/* DEDICATED SERVICES IMAGE SLIDER SHOWCASE */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
+          <span className="text-xs font-mono-tech uppercase font-bold text-orange-400 tracking-wider">
+            Visual Services Portfolio &amp; Equipment
+          </span>
+        </div>
+        <ServicesSlider
+          onSchedulePickup={onOpenPickup}
+          onPartnerClick={onOpenPartner}
+        />
+      </section>
+
       {/* SECTION 1: INTERACTIVE RATE CALCULATOR */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <RateCalculator
@@ -56,6 +71,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           onPartnerClick={onOpenPartner}
         />
       </section>
+
 
       {/* SECTION 2: COD CASH FLOW INFOGRAPHIC */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
