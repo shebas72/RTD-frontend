@@ -7,9 +7,12 @@ import {
   DollarSign, 
   Calendar, 
   CheckCircle2, 
-  HelpCircle,
+  ShieldCheck,
   TrendingUp,
-  ArrowRight
+  ArrowRight,
+  Clock,
+  Sparkles,
+  Info
 } from 'lucide-react';
 import { LEBANESE_DISTRICTS, CURRENT_USD_LBP_RATE } from '../data/lebanonLocations';
 
@@ -32,132 +35,183 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
   const originDistrict = LEBANESE_DISTRICTS.find((d) => d.id === originId) || LEBANESE_DISTRICTS[0];
   const destDistrict = LEBANESE_DISTRICTS.find((d) => d.id === destId) || LEBANESE_DISTRICTS[1];
 
-  // Fixed Flat Delivery Fee: $3 inside Beirut, $4 outside Beirut
   const isInsideBeirut = destDistrict.governorate === 'Beirut';
   const deliveryFeeUsd = isInsideBeirut ? 3.0 : 4.0;
   const deliveryFeeLbp = isInsideBeirut ? 270000 : 360000;
 
-  // COD calculations
   const parsedCod = parseFloat(codAmount) || 0;
   const codAmountUsd = codCurrency === 'USD' ? parsedCod : parsedCod / CURRENT_USD_LBP_RATE;
   const codAmountLbp = codCurrency === 'LBP' ? parsedCod : Math.round(parsedCod * CURRENT_USD_LBP_RATE);
 
-  // Net merchant payout (Cash collected minus fixed flat courier delivery fee)
   const netPayoutUsd = Math.max(0, codAmountUsd - deliveryFeeUsd);
   const netPayoutLbp = Math.max(0, codAmountLbp - deliveryFeeLbp);
 
+  const popularDestinations = [
+    { id: 'bey_central', name: 'Beirut (Hamra / Verdun)' },
+    { id: 'ksr_coast', name: 'Jounieh (Keserwan)' },
+    { id: 'metn_coast', name: 'Metn (Antelias)' },
+    { id: 'north_tripoli', name: 'Tripoli (North)' },
+    { id: 'south_saida', name: 'Saida (South)' },
+    { id: 'bek_zahle', name: 'Zahle (Bekaa)' },
+  ];
+
   return (
-    <section id="rate-calculator" className="py-16 lg:py-24 bg-white border-y border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="rate-calculator" className="py-12 bg-[#070b14] text-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative space-y-12">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-600/10 text-orange-400 text-xs font-mono-tech font-bold border border-orange-500/20">
             <Calculator className="w-3.5 h-3.5" />
-            <span>Guaranteed Flat-Rate Lebanese Courier Pricing</span>
+            <span>GUARANTEED LEBANESE FLAT RATE PRICING</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            $3 Flat inside Beirut. $4 Flat across Lebanon.
+          
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-display tracking-tight">
+            $3 Flat Inside Beirut. $4 Flat Across Lebanon.
           </h2>
-          <p className="text-slate-600 text-base">
-            Fixed, transparent rates with zero fuel markups, zero weight tier surprises, and free Cash on Delivery (COD) collection.
+
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+            Eliminate unpredictable estimates, arbitrary fuel penalties, and destination surcharges. Real-time dual currency calculation.
           </p>
         </div>
 
         {/* 2-Pillar Flat Pricing Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mb-10">
-          <div className={`p-4 rounded-2xl border transition-all ${
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto">
+          
+          {/* Zone 1: Inside Beirut */}
+          <div className={`p-6 rounded-3xl border transition-all relative overflow-hidden ${
             isInsideBeirut 
-              ? 'bg-blue-50/80 border-blue-300 ring-2 ring-blue-500/20 shadow-xs' 
-              : 'bg-white border-slate-200'
+              ? 'bg-orange-950/30 border-orange-500 ring-2 ring-orange-500/30 shadow-xl' 
+              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
           }`}>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-700">Zone 1: Inside Beirut</span>
-              <span className="text-xs font-black bg-blue-600 text-white px-2 py-0.5 rounded-md">$3.00 Flat</span>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-mono-tech font-bold uppercase tracking-wider text-orange-400">
+                Zone 1: Inside Beirut
+              </span>
+              <span className="text-xs font-black bg-orange-600 text-white px-3 py-1 rounded-full shadow-md font-mono-tech">
+                $3.00 Flat
+              </span>
             </div>
-            <div className="text-2xl font-black text-slate-900">$3.00 <span className="text-xs font-semibold text-slate-500">/ 270,000 LBP</span></div>
-            <p className="text-[11px] text-slate-600 mt-1">
+            
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-black text-white font-mono-tech">$3.00</span>
+              <span className="text-sm font-bold text-slate-400 font-mono-tech">/ 270,000 LBP</span>
+            </div>
+
+            <p className="text-xs text-slate-400 mt-2 leading-relaxed">
               Achrafieh, Hamra, Verdun, Badaro, Downtown, Mar Mikhael, Gemmayze, Mazraa &amp; suburbs.
             </p>
           </div>
 
-          <div className={`p-4 rounded-2xl border transition-all ${
+          {/* Zone 2: Outside Beirut */}
+          <div className={`p-6 rounded-3xl border transition-all relative overflow-hidden ${
             !isInsideBeirut 
-              ? 'bg-emerald-50/80 border-emerald-300 ring-2 ring-emerald-500/20 shadow-xs' 
-              : 'bg-white border-slate-200'
+              ? 'bg-emerald-950/30 border-emerald-500 ring-2 ring-emerald-500/30 shadow-xl' 
+              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
           }`}>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">Zone 2: Outside Beirut</span>
-              <span className="text-xs font-black bg-emerald-600 text-white px-2 py-0.5 rounded-md">$4.00 Flat</span>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-mono-tech font-bold uppercase tracking-wider text-emerald-400">
+                Zone 2: Outside Beirut (All Lebanon)
+              </span>
+              <span className="text-xs font-black bg-emerald-600 text-white px-3 py-1 rounded-full shadow-md font-mono-tech">
+                $4.00 Flat
+              </span>
             </div>
-            <div className="text-2xl font-black text-slate-900">$4.00 <span className="text-xs font-semibold text-slate-500">/ 360,000 LBP</span></div>
-            <p className="text-[11px] text-slate-600 mt-1">
+            
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-black text-white font-mono-tech">$4.00</span>
+              <span className="text-sm font-bold text-slate-400 font-mono-tech">/ 360,000 LBP</span>
+            </div>
+
+            <p className="text-xs text-slate-400 mt-2 leading-relaxed">
               Mount Lebanon, Metn, Keserwan, North Tripoli, South Saida &amp; Tyre, Bekaa &amp; Nabatieh.
             </p>
           </div>
+
         </div>
 
-        {/* Main Calculator Layout */}
+        {/* Main Interactive Calculator Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Inputs Column */}
-          <div className="lg:col-span-7 bg-slate-50 border border-slate-200/90 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="lg:col-span-7 bg-[#0b101e] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+            
+            {/* Quick Destination Select Chips */}
+            <div>
+              <label className="block text-xs font-mono-tech font-bold text-slate-400 uppercase tracking-wider mb-2">
+                Quick Destination Presets
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {popularDestinations.map((dest) => (
+                  <button
+                    key={dest.id}
+                    type="button"
+                    onClick={() => setDestId(dest.id)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      destId === dest.id
+                        ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30'
+                        : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'
+                    }`}
+                  >
+                    {dest.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Origin & Destination District Selectors */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
-              {/* Origin District */}
               <div>
-                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-orange-600" />
+                <label className="block text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-orange-400" />
                   <span>Pickup City / District</span>
                 </label>
                 <select
                   value={originId}
                   onChange={(e) => setOriginId(e.target.value)}
-                  className="w-full py-3 px-3.5 bg-white border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                  className="w-full py-3 px-3.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
                 >
                   {LEBANESE_DISTRICTS.map((d) => (
-                    <option key={d.id} value={d.id}>
+                    <option key={d.id} value={d.id} className="bg-slate-900 text-white">
                       {d.name.split('(')[0]}
                     </option>
                   ))}
                 </select>
-                <span className="text-[11px] text-slate-500 mt-1 block">
+                <span className="text-[11px] text-slate-500 mt-1 block font-mono-tech">
                   Merchant store, hub, or residence
                 </span>
               </div>
 
-              {/* Destination District */}
               <div>
-                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Destination Customer District</span>
+                <label className="block text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Destination District</span>
                 </label>
                 <select
                   value={destId}
                   onChange={(e) => setDestId(e.target.value)}
-                  className="w-full py-3 px-3.5 bg-white border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                  className="w-full py-3 px-3.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
                 >
                   {LEBANESE_DISTRICTS.map((d) => (
-                    <option key={d.id} value={d.id}>
+                    <option key={d.id} value={d.id} className="bg-slate-900 text-white">
                       {d.governorate}: {d.name.split('(')[0]}
                     </option>
                   ))}
                 </select>
-                <span className="text-[11px] text-slate-500 mt-1 block">
+                <span className="text-[11px] text-emerald-400 mt-1 block font-mono-tech">
                   {destDistrict.zone}
                 </span>
               </div>
-
             </div>
 
-            {/* Weight Slider & Presets */}
-            <div className="space-y-2">
+            {/* Weight Slider */}
+            <div className="space-y-2 pt-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <Scale className="w-3.5 h-3.5 text-orange-600" />
+                <label className="text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Scale className="w-3.5 h-3.5 text-orange-400" />
                   <span>Package Weight: {weightKg} kg</span>
                 </label>
-                <span className="text-xs font-medium text-slate-500">
+                <span className="text-xs font-mono-tech text-slate-400">
                   {weightKg <= 1.5 ? 'Standard E-Commerce Flyer' : 'Parcel / Box'}
                 </span>
               </div>
@@ -168,113 +222,41 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
                 step="0.5"
                 value={weightKg}
                 onChange={(e) => setWeightKg(parseFloat(e.target.value))}
-                className="w-full accent-orange-600 h-2 bg-slate-200 rounded-lg cursor-pointer"
+                className="w-full accent-orange-500 h-2 bg-slate-800 rounded-lg cursor-pointer"
               />
-              <div className="flex justify-between text-[11px] text-slate-600 font-medium">
-                <span>0.5 kg (Document / Shirt)</span>
-                <span>2 kg (Base cap)</span>
-                <span>5 kg (Shoes / Cosmetics)</span>
+              <div className="flex justify-between text-[11px] text-slate-500 font-mono-tech">
+                <span>0.5 kg (Flyer)</span>
+                <span>2 kg (Cap)</span>
+                <span>5 kg (Box)</span>
                 <span>15 kg (Bulk)</span>
               </div>
             </div>
 
-            {/* Speed Selection */}
-            <div>
-              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-amber-500" />
-                <span>Delivery Speed &amp; Priority</span>
-              </label>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setSpeed('standard')}
-                  className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
-                    speed === 'standard'
-                      ? 'border-orange-600 bg-orange-50/50 ring-2 ring-orange-500/20'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-slate-900">Next-Day Standard</span>
-                    <span className="text-[11px] font-bold text-slate-500">Regular</span>
-                  </div>
-                  <div className="text-[11px] text-slate-600">
-                    24 to 48 hours doorstep dispatch across all Lebanese regions.
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  disabled={!destDistrict.expressAvailable}
-                  onClick={() => destDistrict.expressAvailable && setSpeed('express')}
-                  className={`p-3.5 rounded-xl border text-left transition-all ${
-                    !destDistrict.expressAvailable
-                      ? 'opacity-50 cursor-not-allowed border-slate-200 bg-slate-100'
-                      : speed === 'express'
-                      ? 'border-orange-600 bg-orange-50/50 ring-2 ring-orange-500/20 cursor-pointer'
-                      : 'border-slate-200 bg-white hover:border-slate-300 cursor-pointer'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-slate-900 flex items-center gap-1">
-                      <span>Same-Day Express</span>
-                      <Zap className="w-3 h-3 text-amber-500 fill-amber-500" />
-                    </span>
-                    <span className="text-[10px] font-bold text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-sm">
-                      +$2.00
-                    </span>
-                  </div>
-                  <div className="text-[11px] text-slate-600">
-                    {destDistrict.expressAvailable
-                      ? 'Guaranteed within 4 to 6 hours (Beirut & Metn zone)'
-                      : 'Not available for remote zones'}
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Cash on Delivery (COD) Amount Input */}
-            <div className="pt-2 border-t border-slate-200">
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Cash on Delivery (COD) to Collect</span>
+            {/* COD Cash Collection Input */}
+            <div className="space-y-2 pt-2 border-t border-slate-800">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Cash-on-Delivery (COD) To Collect:</span>
                 </label>
-
-                {/* Currency Toggle */}
-                <div className="flex rounded-lg border border-slate-300 overflow-hidden bg-white">
+                <div className="flex rounded-lg bg-slate-900 p-0.5 border border-slate-800 text-xs font-mono-tech">
                   <button
                     type="button"
-                    onClick={() => {
-                      if (codCurrency !== 'USD') {
-                        setCodCurrency('USD');
-                        setCodAmount('50');
-                      }
-                    }}
-                    className={`px-3 py-1 text-xs font-bold transition-colors ${
-                      codCurrency === 'USD'
-                        ? 'bg-slate-900 text-white'
-                        : 'text-slate-600 hover:text-slate-900'
+                    onClick={() => setCodCurrency('USD')}
+                    className={`px-2 py-0.5 rounded font-bold cursor-pointer ${
+                      codCurrency === 'USD' ? 'bg-emerald-600 text-white' : 'text-slate-400'
                     }`}
                   >
-                    USD ($)
+                    USD
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      if (codCurrency !== 'LBP') {
-                        setCodCurrency('LBP');
-                        setCodAmount('4500000');
-                      }
-                    }}
-                    className={`px-3 py-1 text-xs font-bold transition-colors ${
-                      codCurrency === 'LBP'
-                        ? 'bg-slate-900 text-white'
-                        : 'text-slate-600 hover:text-slate-900'
+                    onClick={() => setCodCurrency('LBP')}
+                    className={`px-2 py-0.5 rounded font-bold cursor-pointer ${
+                      codCurrency === 'LBP' ? 'bg-amber-600 text-white' : 'text-slate-400'
                     }`}
                   >
-                    LBP (ل.ل)
+                    LBP
                   </button>
                 </div>
               </div>
@@ -284,130 +266,96 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
                   type="number"
                   value={codAmount}
                   onChange={(e) => setCodAmount(e.target.value)}
-                  placeholder={codCurrency === 'USD' ? '50' : '4500000'}
-                  className="w-full pl-9 pr-4 py-3 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                  placeholder="0.00"
+                  className="w-full pl-4 pr-16 py-3 bg-slate-900 border border-slate-700 rounded-xl text-sm font-mono-tech font-bold text-white focus:outline-hidden focus:border-orange-500"
                 />
-                <span className="absolute left-3.5 top-3.5 text-xs font-bold text-slate-400">
-                  {codCurrency === 'USD' ? '$' : 'LL'}
+                <span className="absolute right-4 top-3 text-xs font-mono-tech text-slate-400 font-bold">
+                  {codCurrency}
                 </span>
               </div>
-              <span className="text-[11px] text-slate-500 mt-1 block">
-                Official exchange reference: 1 USD = {CURRENT_USD_LBP_RATE.toLocaleString()} LBP
-              </span>
             </div>
 
           </div>
 
-          {/* Results & Breakdown Card */}
-          <div className="lg:col-span-5 bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 space-y-6">
-            <div>
-              <span className="text-xs font-bold text-orange-400 uppercase tracking-wider block">
-                Quote &amp; Remittance Breakdown
+          {/* Result Breakdown Card */}
+          <div className="lg:col-span-5 bg-[#0b101e] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <span className="text-xs font-mono-tech font-bold text-orange-400 block">
+                  INSTANT FEE BREAKDOWN
+                </span>
+                <h3 className="text-xl font-black text-white font-display">
+                  Courier Delivery Fee
+                </h3>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-black text-white font-mono-tech">
+                  ${deliveryFeeUsd.toFixed(2)}
+                </span>
+                <span className="text-xs text-amber-400 font-mono-tech block">
+                  {deliveryFeeLbp.toLocaleString()} LBP
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-3 text-xs font-mono-tech text-slate-300">
+              <div className="flex justify-between">
+                <span className="text-slate-400">Destination:</span>
+                <span className="font-bold text-white">{destDistrict.name} ({destDistrict.governorate})</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Rate Classification:</span>
+                <span className={isInsideBeirut ? 'text-orange-400 font-bold' : 'text-emerald-400 font-bold'}>
+                  {isInsideBeirut ? '$3.00 Beirut Flat' : '$4.00 All Lebanon Flat'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Fuel Surcharge:</span>
+                <span className="text-emerald-400 font-bold">$0.00 (Zero %)</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Packaging Flyer:</span>
+                <span className="text-emerald-400 font-bold">Free Provided</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Market Rate Peg:</span>
+                <span className="text-amber-400">1 USD = {CURRENT_USD_LBP_RATE.toLocaleString()} LBP</span>
+              </div>
+            </div>
+
+            {/* Net COD Merchant Remittance */}
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
+              <span className="text-[11px] text-slate-400 font-mono-tech block">
+                ESTIMATED NET MERCHANT REMITTANCE:
               </span>
-              <h3 className="text-2xl font-black text-white mt-1">
-                ${deliveryFeeUsd.toFixed(2)}{' '}
-                <span className="text-base font-bold text-slate-400">
-                  / {deliveryFeeLbp.toLocaleString()} LBP
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-black text-emerald-400 font-mono-tech">
+                  ${netPayoutUsd.toFixed(2)} USD
                 </span>
-              </h3>
-              <p className="text-xs text-slate-400 mt-1">
-                Estimated Delivery Fee for {originDistrict.name.split('(')[0]} &rarr; {destDistrict.name.split('(')[0]}
-              </p>
+                <span className="text-xs font-mono-tech text-slate-300">
+                  ≈ {netPayoutLbp.toLocaleString()} LBP
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-500 font-mono-tech block">
+                100% of collected COD minus courier fee remitted within 48 hours.
+              </span>
             </div>
 
-            {/* Detailed Line Items */}
-            <div className="space-y-3 pt-4 border-t border-slate-800 text-xs">
-              <div className="flex justify-between text-slate-300">
-                <span className="flex items-center gap-1.5">
-                  <span>Fixed Courier Rate</span>
-                  <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${
-                    isInsideBeirut ? 'bg-blue-900/60 text-blue-300' : 'bg-emerald-900/60 text-emerald-300'
-                  }`}>
-                    {isInsideBeirut ? 'Inside Beirut ($3 Flat)' : 'Outside Beirut ($4 Flat)'}
-                  </span>
-                </span>
-                <span className="font-bold text-white">
-                  ${deliveryFeeUsd.toFixed(2)} USD
-                </span>
-              </div>
-
-              <div className="flex justify-between text-slate-300">
-                <span>Fuel Surcharge &amp; Distance Tax</span>
-                <span className="font-bold text-emerald-400">NONE ($0.00)</span>
-              </div>
-
-              <div className="flex justify-between text-slate-300">
-                <span>COD Cash Collection &amp; Vault Handling</span>
-                <span className="font-bold text-emerald-400">FREE ($0.00)</span>
-              </div>
-
-              <div className="flex justify-between text-slate-300">
-                <span>Complimentary A6 Label &amp; RT Flyer Bag</span>
-                <span className="font-bold text-emerald-400">INCLUDED</span>
-              </div>
-
-              <div className="flex justify-between text-slate-300">
-                <span>Customer Delivery Window</span>
-                <span className="font-bold text-white">
-                  {destDistrict.standardEtaHours} Hours Doorstep
-                </span>
-              </div>
-            </div>
-
-            {/* Net Merchant Cash Payout Box */}
-            <div className="bg-slate-800/80 rounded-xl p-4 border border-slate-700/80 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-300">
-                  Net Merchant Payout (COD):
-                </span>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">
-                  Remitted Weekly
-                </span>
-              </div>
-              <div className="text-xl font-black text-emerald-400">
-                {codCurrency === 'USD' ? (
-                  <>
-                    ${netPayoutUsd.toFixed(2)} USD
-                    <span className="text-xs font-medium text-slate-400 block mt-0.5">
-                      (Or {netPayoutLbp.toLocaleString()} LBP)
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    {netPayoutLbp.toLocaleString()} LBP
-                    <span className="text-xs font-medium text-slate-400 block mt-0.5">
-                      (Or ${netPayoutUsd.toFixed(2)} USD)
-                    </span>
-                  </>
-                )}
-              </div>
-              <p className="text-[11px] text-slate-400 leading-tight">
-                Collected by courier from your client and paid to you every 48 hours in fresh cash or direct transfer.
-              </p>
-            </div>
-
-            {/* CTAs inside breakdown */}
             <div className="space-y-2.5 pt-2">
               <button
                 onClick={onSchedulePickup}
-                className="w-full py-3.5 bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white font-bold text-sm rounded-xl shadow-lg shadow-orange-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-orange-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Calendar className="w-4 h-4" />
-                <span>Book Courier with This Rate</span>
+                <Zap className="w-4 h-4" />
+                <span>Book Courier Pickup Now</span>
               </button>
 
               <button
                 onClick={onPartnerClick}
-                className="w-full py-2.5 bg-transparent hover:bg-slate-800 text-slate-300 hover:text-white font-semibold text-xs rounded-xl border border-slate-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-xs rounded-xl border border-slate-800 transition-colors cursor-pointer"
               >
-                <span>Ship over 50 orders/month? Request Volume Rates &rarr;</span>
+                Apply for High-Volume Merchant Rates
               </button>
-            </div>
-
-            {/* Trust check */}
-            <div className="text-[11px] text-slate-400 flex items-center gap-2 pt-2 border-t border-slate-800">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Complimentary RT barcode packaging flyers included for merchants.</span>
             </div>
 
           </div>

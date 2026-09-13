@@ -155,17 +155,26 @@ export const MerchantDashboardPreview: React.FC<MerchantDashboardPreviewProps> =
                 <span className="w-3 h-3 rounded-full bg-emerald-500/80"></span>
               </div>
               <span className="text-xs font-mono text-slate-400 hidden sm:inline">
-                portal.rtdeliveries.net / merchant / luxe-beirut-apparel
+                app.rtdeliveries.net / merchant / live-console
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-xs">
-              <span className="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 font-medium">
+            <div className="flex items-center gap-2.5 text-xs">
+              <span className="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 font-medium hidden md:inline">
                 Store: <strong>Luxe Beirut Apparel</strong>
               </span>
               <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">
-                API Connected
+                Laravel System Active
               </span>
+              <a
+                href="https://app.rtdeliveries.net/login"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-[11px] font-bold transition-colors"
+              >
+                <span>Live Portal Login</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
           </div>
 

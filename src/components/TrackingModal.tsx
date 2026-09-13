@@ -102,34 +102,34 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
           },
           {
             status: 'picked_up',
-            title: 'Picked Up by RT Courier',
-            description: 'Package received and barcoded for central hub sorting.',
-            timestamp: 'Yesterday 6:00 PM',
-            location: 'Beirut Central Hub',
+            title: 'Picked Up by Courier',
+            description: 'Package scanned and secured into commercial transport van.',
+            timestamp: 'Yesterday 5:45 PM',
+            location: 'Pickup Location',
             completed: true,
           },
           {
-            status: 'in_transit',
-            title: 'Sorting & Dispatch Scan',
-            description: 'Assigned to driver delivery vehicle route.',
-            timestamp: 'Today 8:30 AM',
-            location: 'Regional Sorting Bay',
+            status: 'at_beirut_hub',
+            title: 'Processed at Beirut Sorting Hub',
+            description: 'Barcoded and sorted into regional outbound linehaul run.',
+            timestamp: 'Today 7:15 AM',
+            location: 'Corniche El Nahr Hub',
             completed: true,
           },
           {
             status: 'out_for_delivery',
-            title: 'Out for Customer Delivery',
-            description: 'Courier contacted recipient via WhatsApp/call.',
-            timestamp: 'Today 11:15 AM',
-            location: 'Driver Route Active',
+            title: 'Out for Doorstep Delivery',
+            description: 'Loaded onto courier motorcycle/van for direct recipient hand-off.',
+            timestamp: 'Today 10:30 AM',
+            location: 'Local Delivery Sector',
             completed: true,
           },
           {
             status: 'delivered',
-            title: 'Doorstep Delivery & Cash Collection',
-            description: 'Pending customer signature and cash remittance.',
-            timestamp: 'Estimated 5:00 PM',
-            location: 'Customer Address',
+            title: 'Delivered & COD Remitted',
+            description: 'Recipient signature collected; cash safeguarded in deposit bag.',
+            timestamp: 'Pending Hand-off',
+            location: 'Destination Address',
             completed: false,
           },
         ],
@@ -140,9 +140,7 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (waybillInput.trim()) {
-      performSearch(waybillInput.trim());
-    }
+    performSearch(waybillInput);
   };
 
   const handleRefreshIframe = () => {
@@ -159,36 +157,36 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 md:p-6 animate-in fade-in duration-200">
-      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[95vh]">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 animate-in fade-in duration-200">
+      <div className="bg-[#0b101e] w-full max-w-5xl rounded-3xl shadow-2xl border border-slate-800 overflow-hidden flex flex-col max-h-[95vh] text-white">
         
         {/* Modal Top Header Bar */}
-        <div className="bg-slate-900 text-white px-5 py-3.5 sm:px-6 sm:py-4 flex items-center justify-between">
+        <div className="bg-[#070b14] px-5 py-3.5 sm:px-6 sm:py-4 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-orange-600 flex items-center justify-center text-white font-bold shadow-md shadow-orange-600/30">
+            <div className="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center text-white font-bold shadow-md shadow-orange-600/30">
               <Package className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-base sm:text-lg text-white">
+                <span className="font-black text-base sm:text-lg text-white font-display">
                   RT Live Track &amp; Trace
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold">
-                  Direct Laravel System
+                <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono-tech font-bold">
+                  DIRECT LARAVEL FEED
                 </span>
               </div>
-              <p className="text-xs text-slate-400 hidden sm:block">
-                Connected directly to app.rtdeliveries.net
+              <p className="text-xs text-slate-400 font-mono-tech hidden sm:block">
+                Connected to app.rtdeliveries.net
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 font-mono-tech">
             <a
               href={fullIframeUrl}
               target="_blank"
               rel="noreferrer"
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-800"
               title="Open full page in new tab"
             >
               <span>Open in New Tab</span>
@@ -206,22 +204,22 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
         </div>
 
         {/* Search & Action Bar Inside Modal */}
-        <div className="p-4 sm:p-5 bg-slate-50 border-b border-slate-200">
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2.5">
+        <div className="p-4 sm:p-5 bg-slate-950/60 border-b border-slate-800">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2.5 font-mono-tech">
             <div className="relative flex-1">
               <input
                 type="text"
                 value={waybillInput}
                 onChange={(e) => setWaybillInput(e.target.value)}
                 placeholder="Enter Tracking ID (e.g. RT-8942-BEY)"
-                className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-mono font-bold text-slate-900 uppercase focus:outline-hidden focus:ring-2 focus:ring-orange-500 shadow-2xs"
+                className="w-full pl-11 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm font-bold text-white uppercase focus:outline-hidden focus:border-orange-500 shadow-inner"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
             </div>
             
             <button
               type="submit"
-              className="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-orange-600/30 transition-colors flex items-center justify-center gap-2 cursor-pointer font-sans"
             >
               <span>Track Now</span>
               <ArrowRight className="w-4 h-4" />
@@ -229,9 +227,9 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
           </form>
 
           {/* Preset Chips & View Switcher */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-3 pt-3 border-t border-slate-200/80 text-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-3 pt-3 border-t border-slate-800/80 text-xs font-mono-tech">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-slate-500 font-medium">Quick Demo:</span>
+              <span className="text-slate-400 font-medium">Quick Demo:</span>
               {SAMPLE_WAYBILLS.map((item) => (
                 <button
                   key={item.waybill}
@@ -239,10 +237,10 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
                     setWaybillInput(item.waybill);
                     performSearch(item.waybill);
                   }}
-                  className={`px-2.5 py-1 rounded-lg border font-mono font-semibold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg border font-bold transition-all cursor-pointer ${
                     activeWaybill === item.waybill
-                      ? 'bg-orange-600 text-white border-orange-600 shadow-2xs'
-                      : 'bg-white text-slate-700 border-slate-300 hover:bg-orange-50 hover:border-orange-300'
+                      ? 'bg-orange-600 text-white border-orange-500 shadow-md shadow-orange-600/30'
+                      : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700'
                   }`}
                 >
                   {item.waybill}
@@ -251,42 +249,42 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
             </div>
 
             {/* View Mode Switcher */}
-            <div className="inline-flex rounded-xl bg-slate-200/80 p-0.5 self-start sm:self-auto">
+            <div className="inline-flex rounded-xl bg-slate-900 p-1 border border-slate-800 self-start sm:self-auto">
               <button
                 onClick={() => setActiveView('iframe')}
                 className={`px-3 py-1 rounded-lg font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
                   activeView === 'iframe'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-orange-600 text-white shadow-xs'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <Globe className="w-3.5 h-3.5 text-orange-600" />
-                <span>Live Embedded Portal</span>
+                <Globe className="w-3.5 h-3.5" />
+                <span>Live Portal Frame</span>
               </button>
               <button
                 onClick={() => setActiveView('details')}
                 className={`px-3 py-1 rounded-lg font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
                   activeView === 'details'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-orange-600 text-white shadow-xs'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <Layers className="w-3.5 h-3.5 text-blue-600" />
-                <span>Summary Breakdown</span>
+                <Layers className="w-3.5 h-3.5" />
+                <span>Manifest Details</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* Modal Main Content */}
-        <div className="flex-1 overflow-y-auto bg-slate-100 p-3 sm:p-6">
+        <div className="flex-1 overflow-y-auto bg-[#070b14] p-3 sm:p-6">
           {activeView === 'iframe' ? (
-            <div className="space-y-3">
+            <div className="space-y-3 font-mono-tech">
               {/* Iframe Browser Chrome Bar */}
-              <div className="bg-slate-900 text-slate-300 rounded-xl px-4 py-2.5 flex items-center justify-between text-xs border border-slate-800">
+              <div className="bg-slate-950 text-slate-300 rounded-xl px-4 py-2.5 flex items-center justify-between text-xs border border-slate-800">
                 <div className="flex items-center gap-2 overflow-hidden mr-3">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                  <span className="text-slate-400 font-mono truncate text-[11px]">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <span className="text-slate-400 truncate text-[11px]">
                     {fullIframeUrl}
                   </span>
                 </div>
@@ -294,14 +292,14 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={handleRefreshIframe}
-                    className="p-1.5 rounded-md hover:bg-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
                     title="Reload tracking page"
                   >
                     <RotateCw className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={handleCopyLink}
-                    className="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-white font-medium text-[11px] transition-colors cursor-pointer"
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium text-[11px] transition-colors cursor-pointer border border-slate-700"
                   >
                     {copied ? 'Copied!' : 'Copy Link'}
                   </button>
@@ -309,12 +307,12 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
               </div>
 
               {/* Direct Iframe Container */}
-              <div className="relative w-full h-[580px] bg-white rounded-2xl border border-slate-200 shadow-inner overflow-hidden">
+              <div className="relative w-full h-[580px] bg-slate-950 rounded-2xl border border-slate-800 shadow-inner overflow-hidden">
                 {isIframeLoading && (
-                  <div className="absolute inset-0 z-10 bg-slate-50/90 flex flex-col items-center justify-center gap-3 text-slate-600">
-                    <div className="w-8 h-8 border-3 border-orange-600 border-t-transparent rounded-full animate-spin" />
-                    <span className="text-xs font-semibold text-slate-700">
-                      Loading live tracking from app.rtdeliveries.net...
+                  <div className="absolute inset-0 z-10 bg-slate-950/90 flex flex-col items-center justify-center gap-3 text-slate-400">
+                    <div className="w-8 h-8 border-3 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-xs font-mono-tech text-slate-300">
+                      Loading real-time tracking from app.rtdeliveries.net...
                     </span>
                   </div>
                 )}
@@ -331,13 +329,13 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
               </div>
 
               {/* Support footnote */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-2 text-[11px] text-slate-500">
-                <span>Direct integration with RT Deliveries Laravel core platform.</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-2 text-[11px] text-slate-400">
+                <span>Direct telemetry feed from Corniche El Nahr central sorting hub.</span>
                 <a
                   href={fullIframeUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-orange-600 hover:underline font-semibold flex items-center gap-1"
+                  className="text-orange-400 hover:underline font-bold flex items-center gap-1"
                 >
                   <span>Having trouble viewing? Open full-screen portal</span>
                   <ExternalLink className="w-3 h-3" />
@@ -349,61 +347,88 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
             <div className="space-y-6">
               {currentShipment && (
                 <div className="space-y-6">
-                  {/* Waybill Status Banner */}
-                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  {/* Status Banner */}
+                  <div className="bg-[#0b101e] rounded-2xl p-6 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-mono text-sm font-bold text-slate-500">Waybill:</span>
-                        <span className="font-mono text-xl font-black text-slate-900">{currentShipment.waybill}</span>
-                        <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 text-xs font-bold">
-                          {currentShipment.serviceType}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-500">
-                        Destination: <strong>{currentShipment.city}, {currentShipment.governorate}</strong> • Estimated Delivery: <strong>{currentShipment.estimatedDelivery}</strong>
+                      <span className="text-xs font-mono-tech font-bold text-orange-400 uppercase tracking-wider block">
+                        WAYBILL NUMBER
+                      </span>
+                      <h3 className="text-2xl font-black text-white font-display mt-0.5">
+                        {currentShipment.waybill}
+                      </h3>
+                      <p className="text-xs text-slate-400 font-mono-tech mt-1">
+                        Order Ref: {currentShipment.orderNumber} • ETA: {currentShipment.estimatedDelivery}
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
-                        <span className="text-[11px] text-slate-500 uppercase font-bold block">COD Amount to Collect</span>
-                        <span className="text-2xl font-black text-emerald-600">
-                          ${currentShipment.codAmount.toFixed(2)} {currentShipment.codCurrency}
-                        </span>
+                    <div className="flex items-center gap-3 font-mono-tech">
+                      <div className="px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>{currentShipment.statusLabel}</span>
+                      </div>
+                      <div className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-bold">
+                        COD: {currentShipment.codCurrency === 'USD' ? `$${currentShipment.codAmount} USD` : `${currentShipment.codAmount.toLocaleString()} LBP`}
                       </div>
                     </div>
                   </div>
 
+                  {/* Shipment Info Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono-tech">
+                    <div className="bg-[#0b101e] rounded-2xl p-5 border border-slate-800 space-y-2">
+                      <span className="text-slate-400 font-bold block">RECIPIENT &amp; ADDRESS</span>
+                      <div className="text-white font-bold text-sm font-sans">{currentShipment.recipientName}</div>
+                      <div className="text-slate-400">{currentShipment.recipientPhone}</div>
+                      <div className="text-slate-400 leading-relaxed font-sans">{currentShipment.recipientAddress}</div>
+                      <div className="text-orange-400 font-bold">{currentShipment.city}, {currentShipment.governorate}</div>
+                    </div>
+
+                    <div className="bg-[#0b101e] rounded-2xl p-5 border border-slate-800 space-y-2">
+                      <span className="text-slate-400 font-bold block">ASSIGNED COURIER</span>
+                      <div className="text-white font-bold text-sm font-sans">{currentShipment.courierName}</div>
+                      <div className="text-emerald-400 font-bold">{currentShipment.courierPhone}</div>
+                      <div className="text-slate-400">Service: {currentShipment.serviceType}</div>
+                      <div className="text-slate-400">Parcels: {currentShipment.packageCount} ({currentShipment.weightKg} kg)</div>
+                    </div>
+
+                    <div className="bg-[#0b101e] rounded-2xl p-5 border border-slate-800 space-y-2">
+                      <span className="text-slate-400 font-bold block">PRICING &amp; GUARANTEE</span>
+                      <div className="text-orange-400 font-black text-sm">
+                        {currentShipment.city === 'Beirut' ? '$3.00 Flat Delivery' : '$4.00 Flat Delivery'}
+                      </div>
+                      <div className="text-slate-400">Zero hidden fuel charges</div>
+                      <div className="text-emerald-400 font-bold">100% Insured Transit</div>
+                      <button
+                        onClick={onSchedulePickup}
+                        className="mt-2 w-full py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-bold font-sans transition-colors cursor-pointer"
+                      >
+                        Book Similar Pickup
+                      </button>
+                    </div>
+                  </div>
+
                   {/* Timeline */}
-                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
-                    <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-6">
-                      Shipment Route &amp; Milestones
-                    </h3>
-                    <div className="space-y-6">
-                      {currentShipment.timeline.map((step: TrackingStep, idx: number) => (
-                        <div key={idx} className="flex gap-4 relative">
-                          {idx !== currentShipment.timeline.length - 1 && (
-                            <div className={`absolute left-4 top-8 bottom-0 w-0.5 -ml-px ${
-                              step.completed ? 'bg-orange-500' : 'bg-slate-200'
-                            }`} />
-                          )}
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 ${
+                  <div className="bg-[#0b101e] rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <h4 className="text-sm font-bold text-white font-display">
+                      Event Log &amp; Milestones
+                    </h4>
+
+                    <div className="space-y-4">
+                      {currentShipment.timeline.map((step, idx) => (
+                        <div key={idx} className="flex items-start gap-4">
+                          <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
                             step.completed
-                              ? 'bg-orange-600 text-white shadow-xs'
-                              : 'bg-slate-100 text-slate-400 border border-slate-300'
+                              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                              : 'bg-slate-900 text-slate-500 border border-slate-800'
                           }`}>
-                            {step.completed ? <CheckCircle2 className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
+                            <CheckCircle2 className="w-4 h-4" />
                           </div>
-                          <div className="flex-1 pb-2">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                              <h4 className="text-sm font-bold text-slate-900">{step.title}</h4>
-                              <span className="text-xs font-medium text-slate-500">{step.timestamp}</span>
+                          <div className="flex-1">
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <span className="text-xs font-bold text-white font-display">{step.title}</span>
+                              <span className="text-[10px] font-mono-tech text-slate-400">{step.timestamp}</span>
                             </div>
-                            <p className="text-xs text-slate-600 mt-0.5">{step.description}</p>
-                            <span className="inline-flex items-center gap-1 text-[11px] text-slate-400 mt-1">
-                              <MapPin className="w-3 h-3" />
-                              <span>{step.location}</span>
-                            </span>
+                            <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{step.description}</p>
+                            <span className="text-[10px] font-mono-tech text-orange-400">{step.location}</span>
                           </div>
                         </div>
                       ))}
@@ -414,24 +439,6 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({
             </div>
           )}
         </div>
-
-        {/* Modal Bottom Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-slate-600">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>Need urgent delivery support? Call Beirut dispatch at <strong>+961 1 480 220</strong></span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onSchedulePickup}
-              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
-            >
-              Book New Pickup
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
   );

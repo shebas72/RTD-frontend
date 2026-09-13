@@ -7,7 +7,7 @@ export const FaqSection: React.FC = () => {
   const faqs = [
     {
       q: 'What are your delivery fees across Lebanon?',
-      a: 'We operate on a simple, transparent flat-rate pricing structure: $3.00 flat if delivery is inside Beirut (Achrafieh, Hamra, Verdun, Badaro, Downtown, etc.), and $4.00 flat if delivery is outside Beirut anywhere across Lebanon (Mount Lebanon, Tripoli, Batroun, Saida, Tyre, Zahle, etc.). There are zero hidden fuel surcharges, zero distance taxes, and no arbitrary price inflation.',
+      a: 'We operate on a transparent flat-rate pricing structure: $3.00 flat if delivery is inside Beirut (Achrafieh, Hamra, Verdun, Badaro, Downtown, etc.), and $4.00 flat if delivery is outside Beirut anywhere across Lebanon (Mount Lebanon, Tripoli, Batroun, Saida, Tyre, Zahle, etc.). There are zero hidden fuel surcharges, zero distance taxes, and no arbitrary price inflation.',
     },
     {
       q: 'How does Cash on Delivery (COD) collection and payout work in Lebanon?',
@@ -40,20 +40,20 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="py-16 lg:py-24 bg-[#070b14] text-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Section Header */}
-        <div className="text-center space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-bold">
+        <div className="text-center space-y-3 mb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-600/10 text-orange-400 border border-orange-500/20 text-xs font-mono-tech font-bold">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Frequently Asked Questions</span>
+            <span>OPERATIONAL KNOWLEDGE BASE</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Everything you need to know about delivery in Lebanon
+          <h2 className="text-3xl sm:text-4xl font-black text-white font-display tracking-tight">
+            Everything You Need to Know About Lebanese E-Commerce Delivery
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base">
-            Clear answers to common questions about COD payments, warehousing, exchanges, and coverage.
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+            Clear answers to common operational questions regarding dual-currency COD payments, warehousing, exchanges, and linehaul coverage.
           </p>
         </div>
 
@@ -64,17 +64,17 @@ export const FaqSection: React.FC = () => {
             return (
               <div
                 key={index}
-                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs transition-colors"
+                className="bg-[#0b101e] rounded-2xl border border-slate-800 overflow-hidden shadow-lg transition-all"
               >
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 font-bold text-slate-900 hover:text-orange-600 transition-colors cursor-pointer text-sm sm:text-base"
+                  className="w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 font-bold text-white hover:text-orange-400 transition-colors cursor-pointer text-sm sm:text-base font-display"
                 >
                   <span>{faq.q}</span>
                   <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center bg-slate-100 text-slate-600 shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 bg-orange-100 text-orange-600' : ''
+                    className={`w-7 h-7 rounded-xl flex items-center justify-center bg-slate-900 text-slate-400 shrink-0 border border-slate-800 transition-transform duration-200 ${
+                      isOpen ? 'rotate-180 bg-orange-600/20 text-orange-400 border-orange-500/30' : ''
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -82,7 +82,7 @@ export const FaqSection: React.FC = () => {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                  <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/80">
                     {faq.a}
                   </div>
                 )}
@@ -92,18 +92,18 @@ export const FaqSection: React.FC = () => {
         </div>
 
         {/* Still have questions WhatsApp block */}
-        <div className="mt-10 p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-3">
-          <h4 className="text-base font-bold text-slate-900">
-            Have a custom question about your Lebanese e-commerce store?
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#0b101e] border border-slate-800 text-center space-y-4 shadow-xl">
+          <h4 className="text-base font-bold text-white font-display">
+            Have a custom operational question for your Lebanese store?
           </h4>
-          <p className="text-xs text-slate-500 max-w-md mx-auto">
-            Our Beirut merchant support team is available on WhatsApp Monday through Saturday from 8:30 AM to 7:00 PM.
+          <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+            Our Beirut merchant dispatch team is available on WhatsApp Monday through Saturday from 8:30 AM to 7:00 PM.
           </p>
           <a
             href="https://wa.me/96171892411?text=Hello%20RT%20Deliveries,%20I%20have%20a%20question%20about%20your%20services"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-600/20 transition-all cursor-pointer"
           >
             <MessageSquare className="w-4 h-4" />
             <span>Chat Directly on WhatsApp (+961 71 892 411)</span>

@@ -6,13 +6,16 @@ import {
   MapPin, 
   Package, 
   Calculator, 
-  Calendar, 
   Zap, 
-  TrendingUp, 
   CheckCircle2, 
   DollarSign,
+  ExternalLink,
+  Clock,
+  ChevronRight,
+  TrendingUp,
   Boxes,
-  PhoneCall
+  Compass,
+  Radio
 } from 'lucide-react';
 import { LEBANESE_DISTRICTS, CURRENT_USD_LBP_RATE } from '../data/lebanonLocations';
 
@@ -29,399 +32,424 @@ export const Hero: React.FC<HeroProps> = ({
   onOpenPartnerModal,
   onSelectSection,
 }) => {
-  const [activeTab, setActiveTab] = useState<'track' | 'calculate' | 'pickup'>('track');
+  const [activeCockpitTab, setActiveCockpitTab] = useState<'track' | 'rates' | 'linehauls'>('track');
   const [inputWaybill, setInputWaybill] = useState('');
-  
-  // Rate preview state inside hero card
-  const [origin, setOrigin] = useState('bey_central');
-  const [destination, setDestination] = useState('bey_central');
-  const [weightKg, setWeightKg] = useState('1');
+  const [selectedDistrictId, setSelectedDistrictId] = useState('bey_central');
 
-  const sampleWaybills = [
-    { code: 'RT-8942-BEY', label: 'Beirut Delivery (Active)' },
-    { code: 'RT-2104-MNT', label: 'Keserwan Express (Delivered)' },
-    { code: 'RT-7731-NTH', label: 'Tripoli Shuttle (In Transit)' },
-  ];
+  const selectedDistrict = LEBANESE_DISTRICTS.find((d) => d.id === selectedDistrictId) || LEBANESE_DISTRICTS[0];
+  const isBeirut = selectedDistrict.governorate === 'Beirut';
+  const deliveryFeeUsd = isBeirut ? 3.0 : 4.0;
+  const deliveryFeeLbp = isBeirut ? 270000 : 360000;
 
   const handleTrackSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputWaybill.trim()) {
-      onTrackWaybill(inputWaybill.trim());
+      onTrackWaybill(inputWaybill.trim().toUpperCase());
     }
   };
 
-  // Quick rate calculation: $3 flat inside Beirut, $4 flat outside Beirut
-  const destDistrict = LEBANESE_DISTRICTS.find((d) => d.id === destination) || LEBANESE_DISTRICTS[0];
-  const isInsideBeirut = destDistrict.governorate === 'Beirut';
-  const calculatedUsd = isInsideBeirut ? 3.0 : 4.0;
-  const calculatedLbp = isInsideBeirut ? 270000 : 360000;
+  const sampleWaybills = [
+    { code: 'RT-8942-BEY', loc: 'Hamra, Beirut', status: 'Out for Delivery', time: '14:30' },
+    { code: 'RT-5120-MN', loc: 'Antelias, Metn', status: 'In Transit', time: '16:00' },
+    { code: 'RT-2041-TRP', loc: 'Mina, Tripoli', status: 'Sorted at Hub', time: 'Tomorrow' },
+  ];
+
+  const linehaulDepartures = [
+    { dest: 'Greater Beirut Metro', time: 'Every 90 mins', status: 'Active', badge: 'Express Motos' },
+    { dest: 'Mount Lebanon & Keserwan', time: '10:00 AM & 2:30 PM', status: 'Active', badge: 'Cargo Vans' },
+    { dest: 'North Lebanon (Tripoli / Batroun)', time: '11:00 AM Daily', status: 'En Route', badge: 'Linehaul Shuttle' },
+    { dest: 'South Lebanon (Saida / Tyre)', time: '11:30 AM Daily', status: 'Active', badge: 'Linehaul Shuttle' },
+    { dest: 'Bekaa Valley (Zahle / Chtaura)', time: '12:00 PM Daily', status: 'Loading', badge: 'Linehaul Shuttle' },
+  ];
 
   return (
-    <section id="hero" className="relative overflow-hidden bg-gradient-to-b from-orange-50/70 via-white to-slate-50 pt-10 pb-16 lg:pt-16 lg:pb-24">
-      {/* Subtle Background Logistics Grid Graphic */}
-      <div className="absolute inset-0 pointer-events-none opacity-30">
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-orange-200/40 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-amber-200/30 blur-3xl"></div>
+    <section className="relative overflow-hidden bg-[#070b14] text-white pt-10 pb-20 lg:pt-16 lg:pb-28">
+      
+      {/* High-tech radial background gradients */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-gradient-to-b from-orange-600/15 via-orange-500/5 to-transparent rounded-full blur-3xl opacity-80" />
+        <div className="absolute top-1/3 -right-20 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 -left-20 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-dot-dark opacity-40" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 lg:space-y-16">
+        
+        {/* HERO MAIN SPLIT LAYOUT */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
-          {/* Left Column: Bold Value Proposition & Positioning */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            {/* Trust Pill / Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100/80 border border-orange-200 text-orange-950 text-xs font-bold shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
-              <span>Lebanon&apos;s Dedicated Courier &amp; Fulfillment Network</span>
+          {/* LEFT: PUNCHY HIGH-IMPACT NARRATIVE (Col 7) */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            
+            {/* Live Operational Chip */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-mono-tech shadow-inner">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+              </span>
+              <span className="text-orange-400 font-bold">NEXT-DAY LEBANON LOGISTICS</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-slate-300">CORNICHE EL NAHR HUB</span>
             </div>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900 tracking-tight leading-[1.12]">
-              Grow your e-commerce in Lebanon with{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
-                frictionless delivery.
-              </span>
-            </h1>
+            {/* Display Headline */}
+            <div className="space-y-3">
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.08]">
+                Precision Logistics for Lebanon’s{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-orange-500">
+                  Modern Brands.
+                </span>
+              </h1>
 
-            {/* Subtitle */}
-            <p className="text-lg sm:text-xl text-slate-600 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Tailored specifically for Lebanese online sellers and independent merchants. Real-time GPS order tracking, reliable COD recovery in USD &amp; LBP, secure central warehouse storage, and automated partner dashboards.
-            </p>
+              <p className="text-slate-400 text-base sm:text-lg leading-relaxed max-w-2xl">
+                Simple, honest pricing: <span className="text-white font-bold">$3 flat in Beirut</span> and <span className="text-white font-bold">$4 flat across all 8 Lebanese governorates</span>. Zero fuel markups, 100% protected cash-on-delivery, and live tracking embedded directly into your workflow.
+              </p>
+            </div>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <button
-                onClick={onOpenPartnerModal}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white font-bold text-base shadow-lg shadow-orange-600/25 hover:shadow-orange-600/35 transition-all transform hover:-translate-y-0.5 cursor-pointer"
-              >
-                <span>Partner With RT Deliveries</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
+            {/* Flat Rate Feature Pills */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+              <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div className="flex items-center justify-between text-xs font-mono-tech text-slate-400">
+                  <span>BEIRUT METRO</span>
+                  <span className="text-emerald-400 font-bold">FLAT</span>
+                </div>
+                <div className="text-2xl font-black text-white mt-1">
+                  $3.00 <span className="text-xs font-normal text-slate-400 font-mono-tech">/ parcel</span>
+                </div>
+                <span className="text-[10px] text-slate-400 block mt-0.5">270,000 LBP • Same/Next Day</span>
+              </div>
 
+              <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div className="flex items-center justify-between text-xs font-mono-tech text-slate-400">
+                  <span>ALL LEBANON</span>
+                  <span className="text-orange-400 font-bold">FLAT</span>
+                </div>
+                <div className="text-2xl font-black text-white mt-1">
+                  $4.00 <span className="text-xs font-normal text-slate-400 font-mono-tech">/ parcel</span>
+                </div>
+                <span className="text-[10px] text-slate-400 block mt-0.5">360,000 LBP • 26 Districts</span>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-sm col-span-2 sm:col-span-1">
+                <div className="flex items-center justify-between text-xs font-mono-tech text-slate-400">
+                  <span>COD REMITTANCE</span>
+                  <span className="text-emerald-400 font-bold">0% FEE</span>
+                </div>
+                <div className="text-xl font-black text-emerald-400 mt-1">
+                  USD &amp; LBP
+                </div>
+                <span className="text-[10px] text-slate-400 block mt-0.5">Daily cash envelopes or Whish</span>
+              </div>
+            </div>
+
+            {/* Action CTA Row */}
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <button
                 onClick={onOpenPickupModal}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-base border border-slate-300/80 shadow-xs hover:border-slate-400 transition-all cursor-pointer"
+                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-sm shadow-xl shadow-orange-600/30 transition-all flex items-center gap-2 cursor-pointer group"
               >
-                <Calendar className="w-5 h-5 text-orange-600" />
-                <span>Schedule a Pickup</span>
+                <Zap className="w-4 h-4 text-white" />
+                <span>Book Merchant Pickup</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <button
+                onClick={() => onSelectSection('services')}
+                className="px-5 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white font-bold text-sm transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <Calculator className="w-4 h-4 text-orange-400" />
+                <span>Rate &amp; Pricing Details</span>
+              </button>
+
+              <button
+                onClick={onOpenPartnerModal}
+                className="px-4 py-3.5 text-xs text-slate-400 hover:text-white font-bold transition-colors cursor-pointer"
+              >
+                Open Merchant Account &rarr;
               </button>
             </div>
 
-            {/* Key Lebanese Merchant Highlights */}
-            <div className="pt-4 border-t border-slate-200/80 grid grid-cols-2 sm:grid-cols-3 gap-4 text-left">
-              <div className="flex items-start gap-2.5">
-                <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 shrink-0">
-                  <DollarSign className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">Weekly COD Remittance</div>
-                  <div className="text-[11px] text-slate-500">In fresh USD or official LBP</div>
-                </div>
+            {/* Trust Checklist */}
+            <div className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-400 font-medium">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Zero Fuel Surcharges</span>
               </div>
-
-              <div className="flex items-start gap-2.5">
-                <div className="p-1.5 rounded-lg bg-orange-50 text-orange-600 shrink-0">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">All 8 Governorates</div>
-                  <div className="text-[11px] text-slate-500">100% Lebanon door-to-door</div>
-                </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Vetted Company Uniformed Fleet</span>
               </div>
-
-              <div className="flex items-start gap-2.5 col-span-2 sm:col-span-1">
-                <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600 shrink-0">
-                  <Boxes className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">Beirut Storage Hub</div>
-                  <div className="text-[11px] text-slate-500">Pick, pack &amp; automated dispatch</div>
-                </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Official Lebanese SARL License</span>
               </div>
             </div>
 
           </div>
 
-          {/* Right Column: Interactive Wakilni-Style Quick Action Console */}
+          {/* RIGHT: INTERACTIVE DISPATCH COCKPIT TERMINAL (Col 5) */}
           <div className="lg:col-span-5">
-            <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/70 border border-slate-200 overflow-hidden">
+            <div className="bg-[#0b101e] rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
               
-              {/* Card Header & Navigation Tabs */}
-              <div className="bg-slate-900 p-2 flex gap-1 rounded-t-2xl">
+              {/* Cockpit Window Header */}
+              <div className="bg-[#070b15] px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  <span className="font-mono-tech text-[11px] text-slate-400 font-bold ml-2">
+                    RT_DISPATCH_COCKPIT // V3.2
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono-tech">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>SYNCED</span>
+                </div>
+              </div>
+
+              {/* Segmented Cockpit Tabs */}
+              <div className="p-2 bg-[#090e1c] border-b border-slate-800 grid grid-cols-3 gap-1.5 text-xs font-mono-tech">
                 <button
-                  onClick={() => setActiveTab('track')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    activeTab === 'track'
-                      ? 'bg-orange-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  onClick={() => setActiveCockpitTab('track')}
+                  className={`py-2 px-2.5 rounded-xl font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    activeCockpitTab === 'track'
+                      ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
                   }`}
                 >
-                  <Search className="w-3.5 h-3.5" />
-                  <span>Track Order</span>
+                  <Search className="w-3 h-3" />
+                  <span>Track</span>
                 </button>
 
                 <button
-                  onClick={() => setActiveTab('calculate')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    activeTab === 'calculate'
-                      ? 'bg-orange-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  onClick={() => setActiveCockpitTab('rates')}
+                  className={`py-2 px-2.5 rounded-xl font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    activeCockpitTab === 'rates'
+                      ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
                   }`}
                 >
-                  <Calculator className="w-3.5 h-3.5" />
-                  <span>Quick Rate</span>
+                  <Calculator className="w-3 h-3" />
+                  <span>Rates</span>
                 </button>
 
                 <button
-                  onClick={() => setActiveTab('pickup')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    activeTab === 'pickup'
-                      ? 'bg-orange-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  onClick={() => setActiveCockpitTab('linehauls')}
+                  className={`py-2 px-2.5 rounded-xl font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    activeCockpitTab === 'linehauls'
+                      ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
                   }`}
                 >
-                  <Package className="w-3.5 h-3.5" />
-                  <span>Dispatch Courier</span>
+                  <Radio className="w-3 h-3" />
+                  <span>Linehauls</span>
                 </button>
               </div>
 
-              {/* Tab 1: Live Waybill Tracking */}
-              {activeTab === 'track' && (
-                <div className="p-6 space-y-5">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-base font-bold text-slate-900">
-                        Real-Time Order Tracking
-                      </h2>
-                      <p className="text-xs text-slate-500 mt-0.5">
-                        Direct live embed linked to app.rtdeliveries.net
+              {/* Cockpit Tab Content */}
+              <div className="p-6 space-y-5">
+                
+                {/* TAB 1: LIVE WAYBILL TRACKER */}
+                {activeCockpitTab === 'track' && (
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <span className="text-xs text-orange-400 font-mono-tech font-bold block">
+                        DIRECT LARAVEL DISPATCH QUERY
+                      </span>
+                      <h3 className="text-lg font-black text-white">
+                        Enter Lebanese Waybill
+                      </h3>
+                      <p className="text-xs text-slate-400">
+                        Direct query to <code className="text-slate-300 font-mono-tech">app.rtdeliveries.net</code>
                       </p>
                     </div>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
-                      Live Portal
-                    </span>
-                  </div>
 
-                  <form onSubmit={handleTrackSubmit} className="space-y-3">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={inputWaybill}
-                        onChange={(e) => setInputWaybill(e.target.value)}
-                        placeholder="e.g. RT-8942-BEY"
-                        className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono font-semibold text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all uppercase placeholder:normal-case placeholder:font-sans placeholder:text-slate-400"
-                      />
-                      <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
-                    </div>
+                    <form onSubmit={handleTrackSubmit} className="space-y-3">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={inputWaybill}
+                          onChange={(e) => setInputWaybill(e.target.value)}
+                          placeholder="e.g. RT-8942-BEY"
+                          className="w-full pl-10 pr-4 py-3.5 bg-slate-950 border border-slate-700/80 rounded-2xl text-sm font-mono-tech font-bold text-white placeholder:text-slate-500 uppercase focus:outline-hidden focus:border-orange-500 shadow-inner"
+                        />
+                        <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-4" />
+                      </div>
 
-                    <button
-                      type="submit"
-                      className="w-full flex items-center justify-center gap-2 py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm rounded-xl shadow-md shadow-orange-600/20 transition-all cursor-pointer"
-                    >
-                      <span>Track Shipment Status</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </form>
+                      <button
+                        type="submit"
+                        className="w-full py-3.5 bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white font-bold text-xs rounded-xl shadow-lg shadow-orange-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Search className="w-4 h-4" />
+                        <span>Query Tracking Servers</span>
+                      </button>
+                    </form>
 
-                  {/* Sample Live Presets for One-Click Testing */}
-                  <div className="pt-2 border-t border-slate-100">
-                    <div className="text-[11px] font-semibold text-slate-600 mb-2 flex items-center justify-between">
-                      <span>Click to test sample Lebanese waybills:</span>
-                      <span className="text-emerald-600 font-bold">● Live Demo</span>
-                    </div>
-                    <div className="space-y-1.5">
-                      {sampleWaybills.map((item) => (
-                        <button
-                          key={item.code}
-                          onClick={() => onTrackWaybill(item.code)}
-                          className="w-full flex items-center justify-between p-2 rounded-lg bg-slate-50 hover:bg-orange-50 border border-slate-200/80 hover:border-orange-200 text-left transition-colors cursor-pointer group"
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs font-bold text-slate-800 group-hover:text-orange-700">
-                              {item.code}
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              • {item.label}
-                            </span>
-                          </div>
-                          <span className="text-[11px] text-orange-600 font-bold group-hover:translate-x-0.5 transition-transform">
-                            View &rarr;
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 2: Quick Shipping Cost & ETA Estimate */}
-              {activeTab === 'calculate' && (
-                <div className="p-6 space-y-4">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-base font-bold text-slate-900">
-                        Instant Lebanon Shipping Estimate
-                      </h2>
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider">
-                        Fixed Flat Rates
+                    {/* Quick Preset Waybills */}
+                    <div className="pt-2 border-t border-slate-800/80 space-y-2">
+                      <span className="text-[11px] text-slate-400 font-mono-tech block">
+                        Or test sample live waybill:
                       </span>
+                      <div className="space-y-1.5">
+                        {sampleWaybills.map((s) => (
+                          <button
+                            key={s.code}
+                            type="button"
+                            onClick={() => onTrackWaybill(s.code)}
+                            className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-orange-500/40 text-xs transition-all text-left cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono-tech font-bold text-orange-400 group-hover:text-orange-300">
+                                {s.code}
+                              </span>
+                              <span className="text-slate-400">• {s.loc}</span>
+                            </div>
+                            <span className="text-[10px] font-mono-tech text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 font-bold">
+                              {s.status}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      $3.00 flat inside Beirut • $4.00 flat everywhere else across Lebanon.
-                    </p>
                   </div>
+                )}
 
-                  <div className="space-y-3">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Pickup Location (Merchant Hub)
-                      </label>
-                      <select
-                        value={origin}
-                        onChange={(e) => setOrigin(e.target.value)}
-                        className="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
-                      >
-                        <option value="bey_central">Greater Beirut / Metn Hub</option>
-                        <option value="ksr_coast">Keserwan Hub (Zouk Mosbeh / Jounieh)</option>
-                        <option value="north_tripoli">North Hub (Tripoli)</option>
-                        <option value="south_saida">South Hub (Saida)</option>
-                      </select>
+                {/* TAB 2: INSTANT RATE CALCULATOR */}
+                {activeCockpitTab === 'rates' && (
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <span className="text-xs text-orange-400 font-mono-tech font-bold block">
+                        GUARANTEED FIXED FLAT RATES
+                      </span>
+                      <h3 className="text-lg font-black text-white">
+                        Check Delivery Fee
+                      </h3>
+                      <p className="text-xs text-slate-400">
+                        Choose recipient destination anywhere in Lebanon.
+                      </p>
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Destination District
+                    <div className="space-y-2">
+                      <label className="text-xs font-mono-tech text-slate-300 block">
+                        Select Delivery Destination:
                       </label>
                       <select
-                        value={destination}
-                        onChange={(e) => setDestination(e.target.value)}
-                        className="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
+                        value={selectedDistrictId}
+                        onChange={(e) => setSelectedDistrictId(e.target.value)}
+                        className="w-full px-4 py-3 bg-slate-950 border border-slate-700/80 rounded-xl text-xs font-bold text-white focus:outline-hidden focus:border-orange-500"
                       >
-                        {LEBANESE_DISTRICTS.map((dist) => (
-                          <option key={dist.id} value={dist.id}>
-                            {dist.governorate}: {dist.name.split('(')[0]}
+                        {LEBANESE_DISTRICTS.map((d) => (
+                          <option key={d.id} value={d.id} className="bg-slate-900 text-white">
+                            {d.name} ({d.governorate}) — {d.governorate === 'Beirut' ? '$3.00 Flat' : '$4.00 Flat'}
                           </option>
                         ))}
                       </select>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Weight (kg)
-                        </label>
-                        <select
-                          value={weightKg}
-                          onChange={(e) => setWeightKg(e.target.value)}
-                          className="w-full py-2 px-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-800"
-                        >
-                          <option value="1">Up to 1.5 kg (Flyer)</option>
-                          <option value="3">3 kg (Box)</option>
-                          <option value="5">5 kg (Medium Box)</option>
-                          <option value="10">10 kg (Bulk Parcel)</option>
-                        </select>
+                    {/* Calculated Outcome */}
+                    <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <span className="text-[11px] text-slate-400 font-mono-tech block">
+                            {selectedDistrict.name} ({selectedDistrict.governorate})
+                          </span>
+                          <span className="text-2xl font-black text-white">
+                            ${deliveryFeeUsd.toFixed(2)} USD
+                          </span>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-[10px] text-slate-400 font-mono-tech block">
+                            LEBANESE POUND EQUIVALENT
+                          </span>
+                          <span className="text-sm font-mono-tech font-bold text-amber-400">
+                            {deliveryFeeLbp.toLocaleString()} LBP
+                          </span>
+                        </div>
                       </div>
 
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Delivery Speed
-                        </label>
-                        <div className="py-2 px-3 bg-slate-100 rounded-xl text-xs font-semibold text-slate-700 flex items-center justify-between">
-                          <span>{destDistrict.standardEtaHours}h Doorstep</span>
-                          <Zap className="w-3.5 h-3.5 text-amber-500" />
+                      <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 space-y-1">
+                        <div className="flex justify-between">
+                          <span>Delivery SLA:</span>
+                          <strong className="text-emerald-400">{isBeirut ? 'Same / Next Day' : '24 - 48 Hours'}</strong>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>COD Cash Handling:</span>
+                          <strong className="text-white">Included (Zero %)</strong>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Open Package Allowed:</span>
+                          <strong className="text-white">Upon Merchant Request</strong>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Calculated Price Box */}
-                  <div className="bg-orange-50/70 border border-orange-200/80 rounded-xl p-3.5 flex items-center justify-between">
-                    <div>
-                      <span className="text-[11px] font-semibold text-slate-600 flex items-center gap-1.5">
-                        <span>Fixed Delivery Fee</span>
-                        <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${
-                          isInsideBeirut ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'
-                        }`}>
-                          {isInsideBeirut ? 'Inside Beirut ($3 Flat)' : 'Outside Beirut ($4 Flat)'}
-                        </span>
-                      </span>
-                      <div className="flex items-baseline gap-2 mt-0.5">
-                        <span className="text-2xl font-black text-orange-600">
-                          ${calculatedUsd.toFixed(2)}
-                        </span>
-                        <span className="text-xs font-bold text-slate-600">
-                          or {calculatedLbp.toLocaleString()} LBP
-                        </span>
-                      </div>
-                    </div>
                     <button
-                      onClick={() => onSelectSection('rate-calculator')}
-                      className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-xs font-bold shadow-xs cursor-pointer"
+                      onClick={onOpenPickupModal}
+                      className="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer"
                     >
-                      Full Details
+                      Book Delivery to {selectedDistrict.name}
                     </button>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Tab 3: Quick Courier Dispatch */}
-              {activeTab === 'pickup' && (
-                <div className="p-6 space-y-4">
-                  <div>
-                    <h2 className="text-base font-bold text-slate-900">
-                      Book a Courier Pickup
-                    </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Need a courier at your shop, home office, or warehouse today?
-                    </p>
+                {/* TAB 3: LIVE BEIRUT LINEHAUL BOARD */}
+                {activeCockpitTab === 'linehauls' && (
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <span className="text-xs text-orange-400 font-mono-tech font-bold block">
+                        CORNICHE EL NAHR DISPATCH HUB
+                      </span>
+                      <h3 className="text-lg font-black text-white">
+                        Today&apos;s Linehaul Shuttles
+                      </h3>
+                      <p className="text-xs text-slate-400">
+                        Scheduled regional vans departing from central Beirut.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      {linehaulDepartures.map((route, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs"
+                        >
+                          <div>
+                            <span className="font-bold text-white block">{route.dest}</span>
+                            <span className="text-[10px] text-slate-400 font-mono-tech">{route.time}</span>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-[10px] font-mono-tech text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 font-bold block">
+                              {route.status}
+                            </span>
+                            <span className="text-[9px] text-slate-500 font-mono-tech mt-0.5 block">
+                              {route.badge}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-orange-400 shrink-0" />
+                      <span>Parcels received by 2:00 PM at Beirut hub dispatch same evening.</span>
+                    </div>
                   </div>
+                )}
 
-                  <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200 space-y-2 text-xs text-slate-600">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Same-day pickup for orders registered before 3:30 PM</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Complimentary RT flyer packaging bags provided upon request</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Immediate digital barcode receipt upon courier handover</span>
-                    </div>
-                  </div>
+              </div>
 
-                  <button
-                    onClick={onOpenPickupModal}
-                    className="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm rounded-xl shadow-md shadow-orange-600/20 transition-all cursor-pointer flex items-center justify-center gap-2"
-                  >
-                    <Calendar className="w-4 h-4" />
-                    <span>Open Pickup Scheduling Form</span>
-                  </button>
-
-                  <a
-                    href="https://wa.me/96171892411?text=Hello%20RT%20Deliveries,%20I%20want%20to%20dispatch%20a%20courier%20now"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl border border-emerald-200 transition-colors flex items-center justify-center gap-1.5"
-                  >
-                    <PhoneCall className="w-3.5 h-3.5" />
-                    <span>Or WhatsApp Urgent Dispatch (+961 71 892 411)</span>
-                  </a>
+              {/* Cockpit Footer Bar */}
+              <div className="bg-[#070b15] px-5 py-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400 font-mono-tech">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <span>26 Districts Linked</span>
                 </div>
-              )}
-
-              {/* Card Footer Live Verification */}
-              <div className="bg-slate-50 px-6 py-3 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500 font-medium">
-                <span className="flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  Lebanese Merchant Protection Protocol
-                </span>
                 <button
-                  onClick={onOpenPartnerModal}
-                  className="font-bold text-orange-600 hover:text-orange-700 cursor-pointer"
+                  onClick={() => onSelectSection('tracking')}
+                  className="text-orange-400 hover:text-orange-300 font-bold flex items-center gap-1 cursor-pointer"
                 >
-                  Open Free Merchant Account &rarr;
+                  <span>Full Live Iframe</span>
+                  <ChevronRight className="w-3 h-3" />
                 </button>
               </div>
 
@@ -430,23 +458,46 @@ export const Hero: React.FC<HeroProps> = ({
 
         </div>
 
-        {/* Live Metrics Row below hero */}
-        <div className="mt-16 pt-8 border-t border-slate-200/80 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="p-4 rounded-xl bg-white border border-slate-200/70 shadow-xs">
-            <div className="text-2xl sm:text-3xl font-black text-slate-900">120,000+</div>
-            <div className="text-xs font-semibold text-slate-600 mt-1">Lebanese Orders Delivered</div>
+        {/* BOTTOM LIVE TELEMETRY COUNTER STRIP */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-slate-850">
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <span className="text-slate-400 text-xs font-mono-tech block">FIRST ATTEMPT SLA</span>
+            <span className="text-2xl sm:text-3xl font-black text-white font-display mt-0.5 block">
+              99.2%
+            </span>
+            <span className="text-[11px] text-emerald-400 font-medium mt-0.5 block">
+              Direct phone contact prior to visit
+            </span>
           </div>
-          <div className="p-4 rounded-xl bg-white border border-slate-200/70 shadow-xs">
-            <div className="text-2xl sm:text-3xl font-black text-orange-600">99.2%</div>
-            <div className="text-xs font-semibold text-slate-600 mt-1">Successful COD Recovery</div>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <span className="text-slate-400 text-xs font-mono-tech block">BEIRUT METRO RATE</span>
+            <span className="text-2xl sm:text-3xl font-black text-orange-400 font-display mt-0.5 block">
+              $3.00 <span className="text-xs text-slate-400 font-normal">FLAT</span>
+            </span>
+            <span className="text-[11px] text-slate-400 mt-0.5 block">
+              Zero fuel surcharge guarantee
+            </span>
           </div>
-          <div className="p-4 rounded-xl bg-white border border-slate-200/70 shadow-xs">
-            <div className="text-2xl sm:text-3xl font-black text-slate-900">48 Hours</div>
-            <div className="text-xs font-semibold text-slate-600 mt-1">COD Remittance Cycle</div>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <span className="text-slate-400 text-xs font-mono-tech block">NATIONWIDE REACH</span>
+            <span className="text-2xl sm:text-3xl font-black text-white font-display mt-0.5 block">
+              $4.00 <span className="text-xs text-slate-400 font-normal">FLAT</span>
+            </span>
+            <span className="text-[11px] text-slate-400 mt-0.5 block">
+              All 8 Lebanese Governorates
+            </span>
           </div>
-          <div className="p-4 rounded-xl bg-white border border-slate-200/70 shadow-xs">
-            <div className="text-2xl sm:text-3xl font-black text-slate-900">100%</div>
-            <div className="text-xs font-semibold text-slate-600 mt-1">Lebanon Cities &amp; Villages</div>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+            <span className="text-slate-400 text-xs font-mono-tech block">COD DISBURSEMENT</span>
+            <span className="text-2xl sm:text-3xl font-black text-emerald-400 font-display mt-0.5 block">
+              100% USD/LBP
+            </span>
+            <span className="text-[11px] text-slate-400 mt-0.5 block">
+              Zero currency deduction loss
+            </span>
           </div>
         </div>
 
