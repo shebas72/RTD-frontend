@@ -15,6 +15,7 @@ import {
   Info
 } from 'lucide-react';
 import { LEBANESE_DISTRICTS, CURRENT_USD_LBP_RATE } from '../data/lebanonLocations';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RateCalculatorProps {
   onSchedulePickup: () => void;
@@ -25,6 +26,7 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
   onSchedulePickup,
   onPartnerClick,
 }) => {
+  const { t, isRTL } = useLanguage();
   const [originId, setOriginId] = useState('bey_central');
   const [destId, setDestId] = useState('ksr_coast');
   const [weightKg, setWeightKg] = useState(1.5);
@@ -47,31 +49,33 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
   const netPayoutLbp = Math.max(0, codAmountLbp - deliveryFeeLbp);
 
   const popularDestinations = [
-    { id: 'bey_central', name: 'Beirut (Hamra / Verdun)' },
-    { id: 'ksr_coast', name: 'Jounieh (Keserwan)' },
-    { id: 'metn_coast', name: 'Metn (Antelias)' },
-    { id: 'north_tripoli', name: 'Tripoli (North)' },
-    { id: 'south_saida', name: 'Saida (South)' },
-    { id: 'bek_zahle', name: 'Zahle (Bekaa)' },
+    { id: 'bey_central', name: isRTL ? 'بيروت (الحمرا / فردان)' : 'Beirut (Hamra / Verdun)' },
+    { id: 'ksr_coast', name: isRTL ? 'جونيه (كسروان)' : 'Jounieh (Keserwan)' },
+    { id: 'metn_coast', name: isRTL ? 'المتن (أنطلياس)' : 'Metn (Antelias)' },
+    { id: 'north_tripoli', name: isRTL ? 'طرابلس (الشمال)' : 'Tripoli (North)' },
+    { id: 'south_saida', name: isRTL ? 'صيدا (الجنوب)' : 'Saida (South)' },
+    { id: 'bek_zahle', name: isRTL ? 'زحلة (البقاع)' : 'Zahle (Bekaa)' },
   ];
 
   return (
-    <section id="rate-calculator" className="py-12 bg-[#070b14] text-white relative overflow-hidden">
+    <section id="rate-calculator" className={`py-12 bg-[#070b14] text-white relative overflow-hidden ${isRTL ? 'text-right' : 'text-left'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative space-y-12">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-600/10 text-orange-400 text-xs font-mono-tech font-bold border border-orange-500/20">
             <Calculator className="w-3.5 h-3.5" />
-            <span>GUARANTEED LEBANESE FLAT RATE PRICING</span>
+            <span>{isRTL ? 'حاسبة الأسعار الثابتة والشفافة في لبنان' : 'GUARANTEED LEBANESE FLAT RATE PRICING'}</span>
           </div>
           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-display tracking-tight">
-            $3 Flat Inside Beirut. $4 Flat Across Lebanon.
+            {isRTL ? '٣$ ثابت داخل بيروت. ٤$ ثابت في كل لبنان.' : '$3 Flat Inside Beirut. $4 Flat Across Lebanon.'}
           </h2>
 
           <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-            Eliminate unpredictable estimates, arbitrary fuel penalties, and destination surcharges. Real-time dual currency calculation.
+            {isRTL
+              ? 'تخلص من التقديرات العشوائية ورسوم البنزين المفاجئة وبدل المسافات. حساب فوري مباشر بالدولار والليرة اللبنانية.'
+              : 'Eliminate unpredictable estimates, arbitrary fuel penalties, and destination surcharges. Real-time dual currency calculation.'}
           </p>
         </div>
 
@@ -86,10 +90,10 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
           }`}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-mono-tech font-bold uppercase tracking-wider text-orange-400">
-                Zone 1: Inside Beirut
+                {isRTL ? 'المنطقة ١: داخل بيروت' : 'Zone 1: Inside Beirut'}
               </span>
               <span className="text-xs font-black bg-orange-600 text-white px-3 py-1 rounded-full shadow-md font-mono-tech">
-                $3.00 Flat
+                {isRTL ? '٣.٠٠$ ثابت' : '$3.00 Flat'}
               </span>
             </div>
             
@@ -99,7 +103,9 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
             </div>
 
             <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-              Achrafieh, Hamra, Verdun, Badaro, Downtown, Mar Mikhael, Gemmayze, Mazraa &amp; suburbs.
+              {isRTL
+                ? 'الأشرفية، الحمرا، فردان، بدارو، وسط المدينة، مار مخايل، الجميزة، المزرعة وضواحي العاصمة.'
+                : 'Achrafieh, Hamra, Verdun, Badaro, Downtown, Mar Mikhael, Gemmayze, Mazraa & suburbs.'}
             </p>
           </div>
 
@@ -111,10 +117,10 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
           }`}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-mono-tech font-bold uppercase tracking-wider text-emerald-400">
-                Zone 2: Outside Beirut (All Lebanon)
+                {isRTL ? 'المنطقة ٢: خارج بيروت (كل لبنان)' : 'Zone 2: Outside Beirut (All Lebanon)'}
               </span>
               <span className="text-xs font-black bg-emerald-600 text-white px-3 py-1 rounded-full shadow-md font-mono-tech">
-                $4.00 Flat
+                {isRTL ? '٤.٠٠$ ثابت' : '$4.00 Flat'}
               </span>
             </div>
             
@@ -124,7 +130,9 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
             </div>
 
             <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-              Mount Lebanon, Metn, Keserwan, North Tripoli, South Saida &amp; Tyre, Bekaa &amp; Nabatieh.
+              {isRTL
+                ? 'جبل لبنان، المتن، كسروان، الشمال وطرابلس، الجنوب وصيدا وصور، البقاع والنبطية.'
+                : 'Mount Lebanon, Metn, Keserwan, North Tripoli, South Saida & Tyre, Bekaa & Nabatieh.'}
             </p>
           </div>
 
@@ -139,7 +147,7 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
             {/* Quick Destination Select Chips */}
             <div>
               <label className="block text-xs font-mono-tech font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Quick Destination Presets
+                {isRTL ? 'وجهات شائعة سريعة' : 'Quick Destination Presets'}
               </label>
               <div className="flex flex-wrap gap-2">
                 {popularDestinations.map((dest) => (
@@ -164,7 +172,7 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
               <div>
                 <label className="block text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-orange-400" />
-                  <span>Pickup City / District</span>
+                  <span>{isRTL ? 'منطقة الاستلام (البيك اب)' : 'Pickup City / District'}</span>
                 </label>
                 <select
                   value={originId}
@@ -178,14 +186,14 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
                   ))}
                 </select>
                 <span className="text-[11px] text-slate-500 mt-1 block font-mono-tech">
-                  Merchant store, hub, or residence
+                  {isRTL ? 'متجر، مستودع أو منزل التاجر' : 'Merchant store, hub, or residence'}
                 </span>
               </div>
 
               <div>
                 <label className="block text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Destination District</span>
+                  <span>{isRTL ? 'منطقة وجهة التوصيل' : 'Destination District'}</span>
                 </label>
                 <select
                   value={destId}
@@ -209,10 +217,12 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
               <div className="flex items-center justify-between">
                 <label className="text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                   <Scale className="w-3.5 h-3.5 text-orange-400" />
-                  <span>Package Weight: {weightKg} kg</span>
+                  <span>{isRTL ? `وزن الطرد: ${weightKg} كغ` : `Package Weight: ${weightKg} kg`}</span>
                 </label>
                 <span className="text-xs font-mono-tech text-slate-400">
-                  {weightKg <= 1.5 ? 'Standard E-Commerce Flyer' : 'Parcel / Box'}
+                  {weightKg <= 1.5 
+                    ? (isRTL ? 'كيس شحن قياسي متجر' : 'Standard E-Commerce Flyer') 
+                    : (isRTL ? 'طرد / كرتونة' : 'Parcel / Box')}
                 </span>
               </div>
               <input
@@ -225,10 +235,10 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
                 className="w-full accent-orange-500 h-2 bg-slate-800 rounded-lg cursor-pointer"
               />
               <div className="flex justify-between text-[11px] text-slate-500 font-mono-tech">
-                <span>0.5 kg (Flyer)</span>
-                <span>2 kg (Cap)</span>
-                <span>5 kg (Box)</span>
-                <span>15 kg (Bulk)</span>
+                <span>0.5 kg ({isRTL ? 'كيس' : 'Flyer'})</span>
+                <span>2 kg</span>
+                <span>5 kg ({isRTL ? 'كرتونة' : 'Box'})</span>
+                <span>15 kg ({isRTL ? 'شحنة كبيرة' : 'Bulk'})</span>
               </div>
             </div>
 
@@ -237,7 +247,7 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
               <div className="flex items-center justify-between">
                 <label className="text-xs font-mono-tech font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                   <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Cash-on-Delivery (COD) To Collect:</span>
+                  <span>{isRTL ? 'المبلغ المطلوب تحصيله عند التسليم (COD):' : 'Cash-on-Delivery (COD) To Collect:'}</span>
                 </label>
                 <div className="flex rounded-lg bg-slate-900 p-0.5 border border-slate-800 text-xs font-mono-tech">
                   <button
@@ -267,9 +277,13 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
                   value={codAmount}
                   onChange={(e) => setCodAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full pl-4 pr-16 py-3 bg-slate-900 border border-slate-700 rounded-xl text-sm font-mono-tech font-bold text-white focus:outline-hidden focus:border-orange-500"
+                  className={`w-full py-3 bg-slate-900 border border-slate-700 rounded-xl text-sm font-mono-tech font-bold text-white focus:outline-hidden focus:border-orange-500 ${
+                    isRTL ? 'pr-4 pl-16 text-right' : 'pl-4 pr-16 text-left'
+                  }`}
                 />
-                <span className="absolute right-4 top-3 text-xs font-mono-tech text-slate-400 font-bold">
+                <span className={`absolute top-3 text-xs font-mono-tech text-slate-400 font-bold ${
+                  isRTL ? 'left-4' : 'right-4'
+                }`}>
                   {codCurrency}
                 </span>
               </div>
@@ -282,10 +296,10 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
                 <span className="text-xs font-mono-tech font-bold text-orange-400 block">
-                  INSTANT FEE BREAKDOWN
+                  {isRTL ? 'تفاصيل الأجرة الفورية' : 'INSTANT FEE BREAKDOWN'}
                 </span>
                 <h3 className="text-xl font-black text-white font-display">
-                  Courier Delivery Fee
+                  {isRTL ? 'أجرة التوصيل' : 'Courier Delivery Fee'}
                 </h3>
               </div>
               <div className="text-right">
@@ -300,25 +314,31 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
 
             <div className="space-y-3 text-xs font-mono-tech text-slate-300">
               <div className="flex justify-between">
-                <span className="text-slate-400">Destination:</span>
+                <span className="text-slate-400">{isRTL ? 'وجهة التسليم:' : 'Destination:'}</span>
                 <span className="font-bold text-white">{destDistrict.name} ({destDistrict.governorate})</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Rate Classification:</span>
+                <span className="text-slate-400">{isRTL ? 'تصنيف التسعيرة:' : 'Rate Classification:'}</span>
                 <span className={isInsideBeirut ? 'text-orange-400 font-bold' : 'text-emerald-400 font-bold'}>
-                  {isInsideBeirut ? '$3.00 Beirut Flat' : '$4.00 All Lebanon Flat'}
+                  {isInsideBeirut 
+                    ? (isRTL ? '٣.٠٠$ ثابت داخل بيروت' : '$3.00 Beirut Flat') 
+                    : (isRTL ? '٤.٠٠$ ثابت في كل لبنان' : '$4.00 All Lebanon Flat')}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Fuel Surcharge:</span>
-                <span className="text-emerald-400 font-bold">$0.00 (Zero %)</span>
+                <span className="text-slate-400">{isRTL ? 'رسوم البنزين والمحروقات:' : 'Fuel Surcharge:'}</span>
+                <span className="text-emerald-400 font-bold">
+                  {isRTL ? '٠.٠٠$ (صفر %)' : '$0.00 (Zero %)'}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Packaging Flyer:</span>
-                <span className="text-emerald-400 font-bold">Free Provided</span>
+                <span className="text-slate-400">{isRTL ? 'أكياس الشحن وبوالص الباركود:' : 'Packaging Flyer:'}</span>
+                <span className="text-emerald-400 font-bold">
+                  {isRTL ? 'مقدمة مجاناً' : 'Free Provided'}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Market Rate Peg:</span>
+                <span className="text-slate-400">{isRTL ? 'سعر الصرف المعتمد:' : 'Market Rate Peg:'}</span>
                 <span className="text-amber-400">1 USD = {CURRENT_USD_LBP_RATE.toLocaleString()} LBP</span>
               </div>
             </div>
@@ -326,7 +346,7 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
             {/* Net COD Merchant Remittance */}
             <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
               <span className="text-[11px] text-slate-400 font-mono-tech block">
-                ESTIMATED NET MERCHANT REMITTANCE:
+                {isRTL ? 'صافي المبلغ المحول لحساب التاجر:' : 'ESTIMATED NET MERCHANT REMITTANCE:'}
               </span>
               <div className="flex items-baseline justify-between">
                 <span className="text-2xl font-black text-emerald-400 font-mono-tech">
@@ -337,7 +357,9 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
                 </span>
               </div>
               <span className="text-[10px] text-slate-500 font-mono-tech block">
-                100% of collected COD minus courier fee remitted within 48 hours.
+                {isRTL 
+                  ? 'يتم تحويل ١٠٠٪ من أموال التحصيل ناقص أجرة التوصيل خلال ٤٨ ساعة فقط.'
+                  : '100% of collected COD minus courier fee remitted within 48 hours.'}
               </span>
             </div>
 
@@ -347,14 +369,14 @@ export const RateCalculator: React.FC<RateCalculatorProps> = ({
                 className="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-orange-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Zap className="w-4 h-4" />
-                <span>Book Courier Pickup Now</span>
+                <span>{isRTL ? 'حجز بيك اب الآن' : 'Book Courier Pickup Now'}</span>
               </button>
 
               <button
                 onClick={onPartnerClick}
                 className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-xs rounded-xl border border-slate-800 transition-colors cursor-pointer"
               >
-                Apply for High-Volume Merchant Rates
+                {isRTL ? 'طلب أسعار خاصة للكميات والمتاجر الكبيرة' : 'Apply for High-Volume Merchant Rates'}
               </button>
             </div>
 

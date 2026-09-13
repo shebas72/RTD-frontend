@@ -21,6 +21,7 @@ import { CodCashFlowInfographic } from '../components/infographics/CodCashFlowIn
 import { PricingInfographic } from '../components/infographics/PricingInfographic';
 import { ComparisonSection } from '../components/ComparisonSection';
 import { CURRENT_USD_LBP_RATE } from '../data/lebanonLocations';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ServicesPageProps {
   onOpenPickup: () => void;
@@ -31,21 +32,25 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   onOpenPickup,
   onOpenPartner,
 }) => {
+  const { t, isRTL } = useLanguage();
+
   return (
-    <div className="space-y-16 sm:space-y-24 py-10 pb-20 bg-[#070b14] text-white">
+    <div className={`space-y-16 sm:space-y-24 py-10 pb-20 bg-[#070b14] text-white ${isRTL ? 'text-right' : 'text-left'}`}>
       
       {/* Page Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-600/10 text-orange-400 border border-orange-500/20 text-xs font-mono-tech font-bold">
             <DollarSign className="w-3.5 h-3.5" />
-            <span>TRANSPARENT FLAT RATE STANDARD</span>
+            <span>{isRTL ? 'معيار السعر الثابت والشفاف' : 'TRANSPARENT FLAT RATE STANDARD'}</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-white font-display tracking-tight">
-            $3 Flat Inside Beirut. $4 Flat Across Lebanon.
+            {isRTL ? '٣$ ثابت داخل بيروت. ٤$ ثابت في كل لبنان.' : '$3 Flat Inside Beirut. $4 Flat Across Lebanon.'}
           </h1>
           <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
-            Eliminate fluctuating courier estimates, arbitrary fuel penalties, and distance taxes. Honest flat pricing with complimentary poly flyer bags and dual-currency COD management.
+            {isRTL
+              ? 'تخلص من تسعيرات السائقين المتقلبة وفروقات البنزين المفاجئة وبدل المسافات. أسعار واضحة وثابتة مع أكياس شحن مجانية وتسوية منتظمة للدفع عند الاستلام بالدولار والليرة.'
+              : 'Eliminate fluctuating courier estimates, arbitrary fuel penalties, and distance taxes. Honest flat pricing with complimentary poly flyer bags and dual-currency COD management.'}
           </p>
         </div>
       </section>
@@ -55,7 +60,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
           <span className="text-xs font-mono-tech uppercase font-bold text-orange-400 tracking-wider">
-            Visual Services Portfolio &amp; Equipment
+            {isRTL ? 'معرض الخدمات والأسطول اللوجستي المصور' : 'Visual Services Portfolio & Equipment'}
           </span>
         </div>
         <ServicesSlider
@@ -71,7 +76,6 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           onPartnerClick={onOpenPartner}
         />
       </section>
-
 
       {/* SECTION 2: COD CASH FLOW INFOGRAPHIC */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,13 +94,13 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <span className="text-xs font-mono-tech font-bold text-orange-400 uppercase tracking-wider block">
-            Specialized Service Deliverables
+            {isRTL ? 'خدمات متخصصة ومصممة للشركات' : 'Specialized Service Deliverables'}
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-white font-display tracking-tight">
-            Built Specifically for High-Growth E-Commerce
+            {isRTL ? 'مصممة خصيصاً لمتاجر التجارة الإلكترونية سريعة النمو' : 'Built Specifically for High-Growth E-Commerce'}
           </h2>
           <p className="text-slate-400 text-sm sm:text-base">
-            Everything your store requires to fulfill customer expectations with total professionalism.
+            {isRTL ? 'كل ما يحتاجه متجرك لتلبية توقعات الزبائن بأعلى مستويات الاحترافية والموثوقية.' : 'Everything your store requires to fulfill customer expectations with total professionalism.'}
           </p>
         </div>
 
@@ -107,13 +111,15 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               <RefreshCw className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-black text-white font-display">
-              Doorstep Size &amp; Model Exchanges
+              {isRTL ? 'تبديل المقاسات والموديلات عند الباب' : 'Doorstep Size & Model Exchanges'}
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Essential for Lebanese apparel, footwear, and accessory stores. Courier brings the replacement size, inspects the returned item at doorstep, verifies tags, and collects/refunds price differences.
+              {isRTL
+                ? 'حل أساسي لمتاجر الألبسة والأحذية في لبنان. يحضر السائق المقاس البديل ويفحص القطعة المسترجعة عند باب الزبون ويتأكد من البطاقات ويحصل أو يرد فرق السعر.'
+                : 'Essential for Lebanese apparel, footwear, and accessory stores. Courier brings the replacement size, inspects the returned item at doorstep, verifies tags, and collects/refunds price differences.'}
             </p>
             <div className="pt-3 border-t border-slate-800 text-xs font-mono-tech font-bold text-orange-400 flex items-center gap-1">
-              <span>Standard $3/$4 rate + $1 exchange fee</span>
+              <span>{isRTL ? 'الأجرة الثابتة ٣$/٤$ + رسوم تبديل ١$ فقط' : 'Standard $3/$4 rate + $1 exchange fee'}</span>
             </div>
           </div>
 
@@ -122,13 +128,15 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               <Package className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-black text-white font-display">
-              Complimentary Poly Flyer Bags &amp; Labels
+              {isRTL ? 'أكياس شحن متينة وبوالص باركود مجاناً' : 'Complimentary Poly Flyer Bags & Labels'}
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              We equip active merchants with high-density, tamper-evident RT flyer bags (S, M, L) and thermal A6 shipping labels. Give your customers an unboxing experience that matches top global retail brands.
+              {isRTL
+                ? 'نزود المتاجر النشطة بأكياس شحن عالية الكثافة ذات إغلاق أمان محكم (S, M, L) وبوالص باركود حرارية، لتمنح زبونك تجربة استلام أنيقة تضاهي كبرى الماركات العالمية.'
+                : 'We equip active merchants with high-density, tamper-evident RT flyer bags (S, M, L) and thermal A6 shipping labels. Give your customers an unboxing experience that matches top global retail brands.'}
             </p>
             <div className="pt-3 border-t border-slate-800 text-xs font-mono-tech font-bold text-emerald-400 flex items-center gap-1">
-              <span>Included free with active dispatch accounts</span>
+              <span>{isRTL ? 'مشمولة مجاناً مع الحسابات النشطة' : 'Included free with active dispatch accounts'}</span>
             </div>
           </div>
 
@@ -137,13 +145,15 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-black text-white font-display">
-              Fragile Goods &amp; Heavy Bulky Parcels
+              {isRTL ? 'السلع القابلة للكسر والطرود الثقيلة' : 'Fragile Goods & Heavy Bulky Parcels'}
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Custom van routing for delicate glass cosmetics, electronics, home decor, and heavy bulk boxes up to 25 kg. Protected with double bubble wrap and full damage insurance guarantees.
+              {isRTL
+                ? 'مسارات فانات مخصصة لمستحضرات التجميل الزجاجية، الإلكترونيات، الديكور المنزلي والكراتين الثقيلة حتى ٢٥ كغ، مع حماية بطبقات فقاعات هوائية وضمان كامل ضد الضرر.'
+                : 'Custom van routing for delicate glass cosmetics, electronics, home decor, and heavy bulk boxes up to 25 kg. Protected with double bubble wrap and full damage insurance guarantees.'}
             </p>
             <div className="pt-3 border-t border-slate-800 text-xs font-mono-tech font-bold text-blue-400 flex items-center gap-1">
-              <span>100% loss/theft reimbursement guarantee</span>
+              <span>{isRTL ? 'ضمان تعويض ١٠٠٪ في حال الفقدان أو الكسر' : '100% loss/theft reimbursement guarantee'}</span>
             </div>
           </div>
 

@@ -31,6 +31,30 @@ export const PartnerModal: React.FC<PartnerModalProps> = ({ isOpen, onClose }) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Transmit onboarding application to info@rtdeliveries.net asynchronously
+    fetch('https://formsubmit.co/ajax/info@rtdeliveries.net', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        _subject: `New Merchant Partner Application: ${formData.businessName}`,
+        _template: 'table',
+        _captcha: 'false',
+        BrandName: formData.businessName,
+        ContactPerson: formData.ownerName,
+        Phone: formData.phone,
+        Email: formData.email || 'N/A',
+        SocialOrWebsite: formData.socialOrWebsite || 'N/A',
+        Category: formData.category,
+        MonthlyOrders: formData.monthlyOrders,
+        NeedsWarehousing: formData.needsWarehousing ? 'YES' : 'NO',
+        CODPayoutPreference: formData.preferredCurrency,
+        SubmissionTime: new Date().toLocaleString('en-US', { timeZone: 'Asia/Beirut' }),
+      }),
+    }).catch((err) => console.warn('Partner submit ping:', err));
+
     setSubmitted(true);
   };
 

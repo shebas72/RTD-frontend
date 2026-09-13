@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
@@ -26,7 +27,8 @@ export type PageId =
   | 'tracking' 
   | 'contact';
 
-export default function App() {
+function AppContent() {
+  const { isRTL, dir } = useLanguage();
   const [currentPage, setCurrentPage] = useState<PageId>('home');
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const [activeTrackingWaybill, setActiveTrackingWaybill] = useState<string>('RT-8942-BEY');
@@ -81,7 +83,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col selection:bg-orange-500 selection:text-white font-sans">
+    <div 
+      dir={dir} 
+      className={`min-h-screen bg-[#070b14] text-slate-100 flex flex-col selection:bg-orange-500 selection:text-white ${isRTL ? 'rtl-lang' : ''}`}
+    >
       {/* Header with Navigation for All Pages */}
       <Header
         onOpenTracking={handleOpenTracking}
@@ -185,5 +190,13 @@ export default function App() {
         onClose={() => setIsPartnerOpen(false)}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }

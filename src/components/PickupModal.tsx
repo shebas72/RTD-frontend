@@ -39,6 +39,33 @@ export const PickupModal: React.FC<PickupModalProps> = ({ isOpen, onClose }) => 
     e.preventDefault();
     const ref = `PKP-${Math.floor(10000 + Math.random() * 90000)}`;
     setBookingRef(ref);
+
+    // Transmit pickup request to info@rtdeliveries.net asynchronously
+    fetch('https://formsubmit.co/ajax/info@rtdeliveries.net', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        _subject: `New Van/Moto Pickup Request: ${ref} - ${formData.businessName || formData.senderName}`,
+        _template: 'table',
+        _captcha: 'false',
+        BookingReference: ref,
+        BusinessOrBrand: formData.businessName,
+        ContactName: formData.senderName,
+        Phone: formData.phone,
+        District: formData.district,
+        DetailedAddress: formData.detailedAddress,
+        ScheduledDate: formData.pickupDate,
+        TimeSlot: formData.timeWindow,
+        EstimatedParcels: formData.packageCount,
+        RequiresFlyerBags: formData.requiresFlyerBags ? 'YES' : 'NO',
+        SpecialNotes: formData.notes || 'None',
+        SubmissionTime: new Date().toLocaleString('en-US', { timeZone: 'Asia/Beirut' }),
+      }),
+    }).catch((err) => console.warn('Pickup submit ping:', err));
+
     setSubmitted(true);
   };
 

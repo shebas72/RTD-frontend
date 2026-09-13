@@ -24,6 +24,8 @@ import {
   DollarSign
 } from 'lucide-react';
 import { CURRENT_USD_LBP_RATE } from '../data/lebanonLocations';
+import { useLanguage } from '../context/LanguageContext';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface HeaderProps {
   onOpenTracking: (waybill?: string) => void;
@@ -40,6 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectSection,
   activeSection,
 }) => {
+  const { t, isRTL } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [quickWaybill, setQuickWaybill] = useState('');
   const [scrolled, setScrolled] = useState(false);
@@ -87,57 +90,57 @@ export const Header: React.FC<HeaderProps> = ({
   const navItems = [
     { 
       id: 'home', 
-      label: 'Home Cockpit', 
-      sublabel: 'Main overview & telemetry',
+      label: t('nav.home', 'Home Cockpit'), 
+      sublabel: t('nav.home.sub', 'Main overview & telemetry'),
       icon: Home,
       badge: null 
     },
     { 
       id: 'services', 
-      label: 'Pricing & Services', 
-      sublabel: '$3 Beirut / $4 All Lebanon',
+      label: t('nav.services', 'Pricing & Services'), 
+      sublabel: t('nav.services.sub', '$3 Beirut / $4 All Lebanon'),
       icon: Truck,
       badge: '$3 / $4 Flat' 
     },
     { 
       id: 'warehousing', 
-      label: 'Warehousing & Storage', 
-      sublabel: '1,500 m² Corniche El Nahr facility',
+      label: t('nav.warehousing', 'Warehousing & Storage'), 
+      sublabel: t('nav.warehousing.sub', '1,500 m² Corniche El Nahr facility'),
       icon: Warehouse,
       badge: 'Fulfillment' 
     },
     { 
       id: 'merchant-portal', 
-      label: 'Merchant Platform', 
-      sublabel: 'Shopify sync & COD ledgers',
+      label: t('nav.portal', 'Merchant Platform'), 
+      sublabel: t('nav.portal.sub', 'Shopify sync & COD ledgers'),
       icon: Laptop,
       badge: 'app.rtdeliveries.net' 
     },
     { 
       id: 'coverage', 
-      label: 'Lebanon Coverage', 
-      sublabel: 'All 8 Governorates & 26 Districts',
+      label: t('nav.coverage', 'Lebanon Coverage'), 
+      sublabel: t('nav.coverage.sub', 'All 8 Governorates & 26 Districts'),
       icon: Globe,
       badge: '100% Reach' 
     },
     { 
       id: 'about', 
-      label: 'Fleet & Facility Gallery', 
-      sublabel: 'Vans, motos, and warehouse floor',
+      label: t('nav.about', 'Fleet & Facility Gallery'), 
+      sublabel: t('nav.about.sub', 'Vans, motos, and warehouse floor'),
       icon: Images,
       badge: null 
     },
     { 
       id: 'tracking', 
-      label: 'Live Waybill Tracking', 
-      sublabel: 'Real-time telemetry portal',
+      label: t('nav.tracking', 'Live Waybill Tracking'), 
+      sublabel: t('nav.tracking.sub', 'Real-time telemetry portal'),
       icon: Radio,
       badge: 'Live Radar' 
     },
     { 
       id: 'contact', 
-      label: 'Contact & Lebanese FAQ', 
-      sublabel: 'Hotline, dispatch desk, and support',
+      label: t('nav.contact', 'Contact & Lebanese FAQ'), 
+      sublabel: t('nav.contact.sub', 'Hotline, dispatch desk, and support'),
       icon: HelpCircle,
       badge: null 
     },
@@ -161,26 +164,26 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-slate-300 font-bold tracking-wider">BEIRUT SORTING HUB: ONLINE</span>
+              <span className="text-slate-300 font-bold tracking-wider">{t('hub.status', 'BEIRUT SORTING HUB: ONLINE')}</span>
             </div>
 
             <div className="hidden md:flex items-center gap-1.5 text-slate-400 border-l border-slate-800 pl-3">
               <MapPin className="w-3 h-3 text-orange-400" />
-              <span>Corniche El Nahr, Beirut</span>
+              <span>{t('hub.location', 'Corniche El Nahr, Beirut')}</span>
             </div>
 
             <div className="hidden lg:flex items-center gap-2 border-l border-slate-800 pl-3 text-emerald-400">
-              <span className="bg-emerald-500/10 text-emerald-300 px-1.5 py-0.5 rounded font-bold">FLAT RATES</span>
-              <span className="text-white font-bold">$3 Beirut</span>
+              <span className="bg-emerald-500/10 text-emerald-300 px-1.5 py-0.5 rounded font-bold">{t('hub.flat_rates', 'FLAT RATES')}</span>
+              <span className="text-white font-bold">{t('hub.rate_beirut', '$3 Beirut')}</span>
               <span className="text-slate-500">•</span>
-              <span className="text-white font-bold">$4 All Lebanon</span>
+              <span className="text-white font-bold">{t('hub.rate_lebanon', '$4 All Lebanon')}</span>
             </div>
           </div>
 
           {/* Right: Dual Currency Reference & WhatsApp Hotline */}
-          <div className="flex items-center gap-4 ml-auto">
+          <div className="flex items-center gap-3 sm:gap-4 ml-auto">
             <div className="hidden sm:flex items-center gap-1.5 bg-slate-900/90 px-2.5 py-0.5 rounded-md border border-slate-800 text-slate-300">
-              <span className="text-slate-400">USD/LBP:</span>
+              <span className="text-slate-400">{t('hub.rate_dual', 'USD/LBP:')}</span>
               <span className="text-amber-400 font-bold">{CURRENT_USD_LBP_RATE.toLocaleString()}</span>
             </div>
 
@@ -201,7 +204,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="hidden sm:flex items-center gap-1 text-orange-400 hover:text-orange-300 font-bold transition-colors border-l border-slate-800 pl-3"
             >
               <Laptop className="w-3 h-3" />
-              <span>app.rtdeliveries.net</span>
+              <span>{t('hub.portal_link', 'app.rtdeliveries.net')}</span>
               <ExternalLink className="w-2.5 h-2.5 opacity-70" />
             </a>
           </div>
@@ -271,9 +274,12 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/30 transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <Zap className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline sm:inline">Book Pickup</span>
-              <span className="xs:hidden sm:hidden">Book</span>
+              <span className="hidden xs:inline sm:inline">{t('action.book_pickup', 'Book Pickup')}</span>
+              <span className="xs:hidden sm:hidden">{t('action.book_pickup_short', 'Book')}</span>
             </button>
+
+            {/* Language Switcher (Pill) in Main Header */}
+            <LanguageSwitcher variant="pill" />
 
             {/* BURGER MENU BUTTON — ALWAYS ACTIVE ON ALL SCREEN SIZES */}
             <button
@@ -287,7 +293,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="w-5 h-0.5 bg-orange-400 rounded-full group-hover:bg-white transition-colors" />
               </div>
               <span className="font-bold text-xs font-mono-tech tracking-wider uppercase hidden sm:inline text-slate-200 group-hover:text-white">
-                Menu
+                {t('action.menu', 'Menu')}
               </span>
             </button>
 
@@ -307,8 +313,8 @@ export const Header: React.FC<HeaderProps> = ({
           />
 
           {/* Drawer Container */}
-          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-            <div className="w-screen max-w-md bg-[#070b14] border-l border-slate-800 shadow-2xl flex flex-col text-white animate-in slide-in-from-right duration-200">
+          <div className={`fixed inset-y-0 ${isRTL ? 'left-0 pr-10' : 'right-0 pl-10'} max-w-full flex`}>
+            <div className={`w-screen max-w-md bg-[#070b14] ${isRTL ? 'border-r slide-in-from-left' : 'border-l slide-in-from-right'} border-slate-800 shadow-2xl flex flex-col text-white animate-in duration-200`}>
               
               {/* Drawer Top Header */}
               <div className="p-5 sm:p-6 bg-[#090e1a] border-b border-slate-800 flex items-center justify-between">
@@ -326,10 +332,10 @@ export const Header: React.FC<HeaderProps> = ({
                   </div>
                   <div>
                     <h3 className="font-display font-black text-sm text-white tracking-tight">
-                      RT Deliveries Menu
+                      {t('drawer.title', 'RT Deliveries Menu')}
                     </h3>
                     <p className="text-[11px] text-slate-400 font-mono-tech">
-                      Lebanon Logistics Command
+                      {t('drawer.subtitle', 'Lebanon Logistics Command')}
                     </p>
                   </div>
                 </div>
@@ -343,24 +349,26 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               </div>
 
-              {/* Quick Search inside Drawer */}
-              <div className="p-4 sm:p-5 bg-slate-950/60 border-b border-slate-800">
+              {/* Language Switcher & Quick Search inside Drawer */}
+              <div className="p-4 sm:p-5 bg-slate-950/60 border-b border-slate-800 space-y-3">
+                <LanguageSwitcher variant="drawer" />
+
                 <form onSubmit={handleQuickTrack} className="flex gap-2 font-mono-tech">
                   <div className="relative flex-1">
                     <input
                       type="text"
                       value={quickWaybill}
                       onChange={(e) => setQuickWaybill(e.target.value)}
-                      placeholder="Waybill (e.g. RT-8942-BEY)"
+                      placeholder={t('action.track_placeholder', 'Waybill (e.g. RT-8942-BEY)')}
                       className="w-full pl-9 pr-3 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-xs text-white placeholder:text-slate-500 uppercase focus:outline-hidden focus:border-orange-500 shadow-inner"
                     />
-                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                    <Search className={`w-4 h-4 text-slate-400 absolute ${isRTL ? 'right-3' : 'left-3'} top-2.5`} />
                   </div>
                   <button
                     type="submit"
-                    className="px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer font-sans"
+                    className="px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer font-sans shrink-0"
                   >
-                    Track
+                    {t('action.track', 'Track')}
                   </button>
                 </form>
               </div>
@@ -368,7 +376,7 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Navigation Items List */}
               <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-1.5">
                 <div className="text-[10px] font-mono-tech uppercase font-bold text-slate-500 tracking-wider px-3 pb-1">
-                  Navigation Directory
+                  {t('drawer.directory', 'Navigation Directory')}
                 </div>
 
                 {navItems.map((item) => {
@@ -385,7 +393,7 @@ export const Header: React.FC<HeaderProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors shrink-0 ${
                           isActive
                             ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30'
                             : 'bg-slate-800 text-slate-400 group-hover:text-orange-400 group-hover:bg-slate-700'
@@ -414,7 +422,7 @@ export const Header: React.FC<HeaderProps> = ({
                         </div>
                       </div>
 
-                      <ChevronRight className={`w-4 h-4 transition-transform ${
+                      <ChevronRight className={`w-4 h-4 transition-transform ${isRTL ? 'rotate-180' : ''} ${
                         isActive ? 'text-orange-400 translate-x-0.5' : 'text-slate-600 group-hover:text-white group-hover:translate-x-0.5'
                       }`} />
                     </button>
@@ -433,7 +441,7 @@ export const Header: React.FC<HeaderProps> = ({
                     className="py-3 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-lg shadow-orange-600/20"
                   >
                     <Zap className="w-3.5 h-3.5" />
-                    <span>Book Pickup</span>
+                    <span>{t('action.book_pickup', 'Book Pickup')}</span>
                   </button>
 
                   <button
@@ -443,7 +451,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className="py-3 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-colors cursor-pointer text-center"
                   >
-                    Merchant Partner
+                    {t('action.partner_onboard', 'Merchant Partner')}
                   </button>
                 </div>
 
@@ -456,7 +464,7 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <Laptop className="w-4 h-4 text-orange-400" />
-                    <span className="font-mono-tech">Merchant Portal (app.rtdeliveries.net)</span>
+                    <span className="font-mono-tech">{t('hub.portal_link', 'Merchant Portal (app.rtdeliveries.net)')}</span>
                   </div>
                   <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
                 </a>
@@ -465,7 +473,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono-tech text-slate-400">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>Corniche El Nahr Hub</span>
+                    <span>{t('hub.location', 'Corniche El Nahr Hub')}</span>
                   </div>
 
                   <a

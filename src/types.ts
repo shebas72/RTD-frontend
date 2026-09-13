@@ -13,6 +13,7 @@ export interface LebaneseDistrict {
   name: string;
   arabicName: string;
   governorate: LebaneseGovernorate;
+  arabicGovernorate?: string;
   zone: 'Zone 1 (Greater Beirut)' | 'Zone 2 (Mount Lebanon)' | 'Zone 3 (Regional / Coastal)' | 'Zone 4 (Remote / Mountain)';
   standardEtaHours: number;
   expressAvailable: boolean;

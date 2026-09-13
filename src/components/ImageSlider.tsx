@@ -11,6 +11,7 @@ import {
   Sparkles,
   Maximize2
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export interface SlideItem {
   id: string;
@@ -39,6 +40,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
   aspectRatio = 'hero',
   className = '',
 }) => {
+  const { isRTL } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -78,8 +80,13 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
-    if (distance > minSwipeDistance) handleNext();
-    if (distance < -minSwipeDistance) handlePrev();
+    if (isRTL) {
+      if (distance > minSwipeDistance) handlePrev();
+      if (distance < -minSwipeDistance) handleNext();
+    } else {
+      if (distance > minSwipeDistance) handleNext();
+      if (distance < -minSwipeDistance) handlePrev();
+    }
   };
 
   if (!slides || slides.length === 0) return null;
@@ -135,13 +142,13 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
 
         {/* Dual Gradient Scrims for text contrast */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#060a14] via-[#060a14]/60 to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#060a14]/90 via-[#060a14]/40 to-transparent z-10" />
+        <div className={`absolute inset-0 ${isRTL ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-[#060a14]/90 via-[#060a14]/40 to-transparent z-10`} />
 
         {/* Floating Slide Content Overlay */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-end p-6 sm:p-10 lg:p-14 max-w-3xl space-y-4">
+        <div className={`absolute inset-0 z-20 flex flex-col justify-end p-6 sm:p-10 lg:p-14 max-w-3xl space-y-4 ${isRTL ? 'text-right' : 'text-left'}`}>
           
           {/* Badge & Category */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className={`flex flex-wrap items-center gap-2 ${isRTL ? 'justify-start' : 'justify-start'}`}>
             <span className="px-3 py-1 rounded-full bg-orange-600/90 backdrop-blur-md text-white font-mono-tech text-xs font-bold uppercase shadow-md">
               {currentSlide.tag}
             </span>
@@ -167,10 +174,10 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
             <div className="pt-2">
               <button
                 onClick={currentSlide.onCtaClick}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/30 transition-all flex items-center gap-2 cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/30 transition-all inline-flex items-center gap-2 cursor-pointer"
               >
                 <span>{currentSlide.ctaText}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
               </button>
             </div>
           )}
@@ -178,7 +185,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
         </div>
 
         {/* Slide Counter HUD & Play/Pause Controls */}
-        <div className="absolute bottom-6 right-6 z-30 flex items-center gap-2">
+        <div className={`absolute bottom-6 ${isRTL ? 'left-6' : 'right-6'} z-30 flex items-center gap-2`}>
           
           {/* Counter Badge */}
           <div className="px-3 py-1.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-white text-xs font-mono-tech font-bold">
@@ -198,19 +205,19 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
 
           {/* Navigation Arrows */}
           <button
-            onClick={handlePrev}
+            onClick={isRTL ? handleNext : handlePrev}
             className="p-2 rounded-xl bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white transition-colors cursor-pointer"
             aria-label="Previous Slide"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
           </button>
 
           <button
-            onClick={handleNext}
+            onClick={isRTL ? handlePrev : handleNext}
             className="p-2 rounded-xl bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white transition-colors cursor-pointer"
             aria-label="Next Slide"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
           </button>
         </div>
 
@@ -225,7 +232,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
               <button
                 key={slide.id}
                 onClick={() => setCurrentIndex(idx)}
-                className={`flex-shrink-0 flex items-center gap-2.5 p-1.5 pr-3 rounded-xl border transition-all text-left cursor-pointer ${
+                className={`flex-shrink-0 flex items-center gap-2.5 p-1.5 pr-3 rounded-xl border transition-all ${isRTL ? 'text-right' : 'text-left'} cursor-pointer ${
                   isActive
                     ? 'bg-slate-900 border-orange-500 shadow-md shadow-orange-500/20'
                     : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 opacity-70 hover:opacity-100'

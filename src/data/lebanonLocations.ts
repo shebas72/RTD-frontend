@@ -241,7 +241,9 @@ export const RT_LOGISTICS_HUBS = [
   {
     id: 'hub_bey',
     name: 'Beirut Central Sorting & Fulfillment Hub',
+    arabicName: 'مركز بيروت الرئيسي للفرز والتجهيز اللوجستي',
     address: 'Corniche El Nahr, Near Sin El Fil Bridge, Beirut',
+    arabicAddress: 'كورنيش النهر، قرب جسر سن الفيل، بيروت',
     governorate: 'Beirut',
     phone: '+961 1 480 220',
     mobileWhatsapp: '+961 71 892 411',
@@ -252,7 +254,9 @@ export const RT_LOGISTICS_HUBS = [
   {
     id: 'hub_ksr',
     name: 'Mount Lebanon & Keserwan Transit Station',
+    arabicName: 'محطة عبور جبل لبنان وكسروان',
     address: 'Zouk Mosbeh Main Industrial Road, Keserwan',
+    arabicAddress: 'طريق ذوق مصبح الصناعي الرئيسي، كسروان',
     governorate: 'Mount Lebanon',
     phone: '+961 9 221 890',
     mobileWhatsapp: '+961 70 334 118',
@@ -263,7 +267,9 @@ export const RT_LOGISTICS_HUBS = [
   {
     id: 'hub_nth',
     name: 'North Lebanon Hub (Tripoli)',
+    arabicName: 'مركز الشمال اللوجستي (طرابلس)',
     address: 'Al Mina Highway, Tripoli, North Lebanon',
+    arabicAddress: 'أوتوستراد الميناء، طرابلس، شمال لبنان',
     governorate: 'North',
     phone: '+961 6 422 105',
     mobileWhatsapp: '+961 76 991 204',
@@ -274,7 +280,9 @@ export const RT_LOGISTICS_HUBS = [
   {
     id: 'hub_sth',
     name: 'South Lebanon Hub (Saida)',
+    arabicName: 'مركز الجنوب اللوجستي (صيدا)',
     address: 'Eastern Boulevard, Near Nejmeh Square, Saida',
+    arabicAddress: 'البولفار الشرقي، قرب ساحة النجمة، صيدا',
     governorate: 'South',
     phone: '+961 7 730 411',
     mobileWhatsapp: '+961 70 551 902',
@@ -285,7 +293,9 @@ export const RT_LOGISTICS_HUBS = [
   {
     id: 'hub_bka',
     name: 'Bekaa Valley Distribution Hub (Chtaura)',
+    arabicName: 'مركز توزيع سهل البقاع (شتورا)',
     address: 'Damascus International Road, Chtaura Center',
+    arabicAddress: 'طريق دمشق الدولية، سنتر شتورا',
     governorate: 'Bekaa',
     phone: '+961 8 541 220',
     mobileWhatsapp: '+961 71 448 912',
