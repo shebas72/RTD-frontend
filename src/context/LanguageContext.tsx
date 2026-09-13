@@ -31,10 +31,19 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (typeof document !== 'undefined') {
       document.documentElement.lang = language;
       document.documentElement.dir = dir;
+      if (document.body) {
+        document.body.dir = dir;
+      }
       if (language === 'ar') {
         document.documentElement.classList.add('rtl-lang');
+        if (document.body) {
+          document.body.classList.add('rtl-lang');
+        }
       } else {
         document.documentElement.classList.remove('rtl-lang');
+        if (document.body) {
+          document.body.classList.remove('rtl-lang');
+        }
       }
     }
     if (typeof window !== 'undefined') {
