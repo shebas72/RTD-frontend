@@ -92,7 +92,7 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
           {/* LEFT: PUNCHY HIGH-IMPACT NARRATIVE (Col 7) */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className={`lg:col-span-7 space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
             
             {/* Live Operational Chip */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-mono-tech shadow-inner">
@@ -163,7 +163,7 @@ export const Hero: React.FC<HeroProps> = ({
               >
                 <Zap className="w-4 h-4 text-white" />
                 <span>{t('hero.btn_pickup', 'Book Merchant Pickup')}</span>
-                <ArrowRight className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                <ArrowRight className={`w-4 h-4 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
               </button>
 
               <button
@@ -309,7 +309,7 @@ export const Hero: React.FC<HeroProps> = ({
                             key={s.code}
                             type="button"
                             onClick={() => onTrackWaybill(s.code)}
-                            className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-orange-500/40 text-xs transition-all text-left cursor-pointer group"
+                            className={`w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-orange-500/40 text-xs transition-all ${isRTL ? 'text-right' : 'text-left'} cursor-pointer group`}
                           >
                             <div className="flex items-center gap-2">
                               <span className="font-mono-tech font-bold text-orange-400 group-hover:text-orange-300">
@@ -370,7 +370,7 @@ export const Hero: React.FC<HeroProps> = ({
                             ${deliveryFeeUsd.toFixed(2)} USD
                           </span>
                         </div>
-                        <div className="text-right">
+                        <div className={isRTL ? 'text-left' : 'text-right'}>
                           <span className="text-[10px] text-slate-400 font-mono-tech block">
                             {isRTL ? 'المعادل بالليرة اللبنانية' : 'LEBANESE POUND EQUIVALENT'}
                           </span>
@@ -426,11 +426,11 @@ export const Hero: React.FC<HeroProps> = ({
                           key={idx}
                           className="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs"
                         >
-                          <div>
+                          <div className={isRTL ? 'text-right' : 'text-left'}>
                             <span className="font-bold text-white block">{route.dest}</span>
                             <span className="text-[10px] text-slate-400 font-mono-tech">{route.time}</span>
                           </div>
-                          <div className="text-right">
+                          <div className={isRTL ? 'text-left' : 'text-right'}>
                             <span className="text-[10px] font-mono-tech text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 font-bold block">
                               {route.status}
                             </span>
@@ -473,7 +473,7 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* BOTTOM LIVE TELEMETRY COUNTER STRIP */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-slate-850">
-          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+          <div className={`p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 ${isRTL ? 'text-right' : 'text-left'}`}>
             <span className="text-slate-400 text-xs font-mono-tech block">{t('stats.sla_label', 'FIRST ATTEMPT SLA')}</span>
             <span className="text-2xl sm:text-3xl font-black text-white font-display mt-0.5 block">
               99.2%
@@ -483,7 +483,7 @@ export const Hero: React.FC<HeroProps> = ({
             </span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+          <div className={`p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 ${isRTL ? 'text-right' : 'text-left'}`}>
             <span className="text-slate-400 text-xs font-mono-tech block">{t('stats.beirut_label', 'BEIRUT METRO RATE')}</span>
             <span className="text-2xl sm:text-3xl font-black text-orange-400 font-display mt-0.5 block">
               $3.00 <span className="text-xs text-slate-400 font-normal">FLAT</span>
@@ -493,7 +493,7 @@ export const Hero: React.FC<HeroProps> = ({
             </span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+          <div className={`p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 ${isRTL ? 'text-right' : 'text-left'}`}>
             <span className="text-slate-400 text-xs font-mono-tech block">{t('stats.reach_label', 'NATIONWIDE REACH')}</span>
             <span className="text-2xl sm:text-3xl font-black text-white font-display mt-0.5 block">
               $4.00 <span className="text-xs text-slate-400 font-normal">FLAT</span>
@@ -503,7 +503,7 @@ export const Hero: React.FC<HeroProps> = ({
             </span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+          <div className={`p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 ${isRTL ? 'text-right' : 'text-left'}`}>
             <span className="text-slate-400 text-xs font-mono-tech block">{t('stats.cod_label', 'COD DISBURSEMENT')}</span>
             <span className="text-2xl sm:text-3xl font-black text-emerald-400 font-display mt-0.5 block">
               100% USD/LBP

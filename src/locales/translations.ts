@@ -143,17 +143,61 @@ export const TRANSLATIONS: Translations = {
     en: 'NEXT-DAY LEBANON LOGISTICS',
     ar: 'خدمات التوصيل السريع لليوم التالي في لبنان',
   },
+  'hero.operational_chip': {
+    en: 'NEXT-DAY LEBANON LOGISTICS',
+    ar: 'خدمات التوصيل السريع لليوم التالي في لبنان',
+  },
+  'hero.hub_tag': {
+    en: 'CORNICHE EL NAHR HUB',
+    ar: 'مركز كورنيش النهر الرئيسي',
+  },
+  'hero.title': {
+    en: 'Precision Logistics for Lebanon’s',
+    ar: 'خدمات لوجستية دقيقة لمتاجر',
+  },
+  'hero.title_highlight': {
+    en: 'Modern Brands.',
+    ar: 'لبنان العصرية.',
+  },
   'hero.h1_main': {
-    en: "Lebanon's Dedicated E-Commerce",
-    ar: 'شريك التجارة الإلكترونية والتوصيل',
+    en: 'Precision Logistics for Lebanon’s',
+    ar: 'خدمات لوجستية دقيقة لمتاجر',
   },
   'hero.h1_highlight': {
-    en: 'Courier & Logistics Fleet',
-    ar: 'الأول والموثوق في لبنان',
+    en: 'Modern Brands.',
+    ar: 'لبنان العصرية.',
   },
   'hero.description': {
     en: 'Fixed $3 Beirut and $4 nationwide delivery across all 26 Lebanese districts. Reliable dual-currency Cash on Delivery remittance, centralized warehousing at Corniche El Nahr, and real-time live waybill tracking.',
     ar: 'توصيل بسعر ثابت ٣$ داخل بيروت و٤$ لسائر الأقضية اللبنانية الـ ٢٦. إدارة موثوقة وتحصيل فوري للأموال بالدولار والليرة، مستودعات مركزية في كورنيش النهر، وتتبع حي مباشر للبوالص.',
+  },
+  'hero.rate_beirut_title': {
+    en: 'BEIRUT METRO',
+    ar: 'نطاق بيروت',
+  },
+  'hero.rate_beirut_sub': {
+    en: '270,000 LBP • Same/Next Day',
+    ar: '٢٧٠,٠٠٠ ل.ل • نفس اليوم / اليوم التالي',
+  },
+  'hero.rate_lebanon_title': {
+    en: 'ALL LEBANON',
+    ar: 'كافة أنحاء لبنان',
+  },
+  'hero.rate_lebanon_sub': {
+    en: '360,000 LBP • 26 Districts',
+    ar: '٣٦٠,٠٠٠ ل.ل • كافة الأقضية الـ ٢٦',
+  },
+  'hero.rate_cod_title': {
+    en: 'COD REMITTANCE',
+    ar: 'تحصيل الأموال (COD)',
+  },
+  'hero.rate_cod_val': {
+    en: 'USD & LBP',
+    ar: 'بالدولار والليرة',
+  },
+  'hero.rate_cod_sub': {
+    en: 'Daily cash envelopes or Whish',
+    ar: 'تسليم نقدي يومي أو عبر Whish',
   },
   'hero.stat_beirut': {
     en: 'Flat $3 Inside Beirut',
@@ -172,30 +216,74 @@ export const TRANSLATIONS: Translations = {
     ar: 'أسطول فانات ودراجات نارية مخصص للشركة',
   },
   'hero.btn_pickup': {
-    en: 'Schedule Van/Moto Pickup',
-    ar: 'جدولة استلام فوري للطرود',
+    en: 'Book Merchant Pickup',
+    ar: 'طلب موعد استلام للتاجر',
+  },
+  'hero.btn_pricing': {
+    en: 'Rate & Pricing Details',
+    ar: 'تفاصيل الأسعار والخدمات',
   },
   'hero.btn_rates': {
     en: 'Calculate Delivery Rate',
     ar: 'حاسبة أسعار التوصيل',
   },
+  'hero.btn_partner': {
+    en: 'Open Merchant Account →',
+    ar: 'افتح حساب تاجر ←',
+  },
+  'hero.trust_fuel': {
+    en: 'Zero Fuel Surcharges',
+    ar: 'بدون أي رسوم محروقات إضافية',
+  },
+  'hero.trust_fleet': {
+    en: 'Vetted Company Uniformed Fleet',
+    ar: 'سائقون موثوقون بزي رسمي موحد',
+  },
+  'hero.trust_license': {
+    en: 'Official Lebanese SARL License',
+    ar: 'شركة لبنانية رسمية مرخصة (ش.م.م)',
+  },
 
   // Cockpit Tabs
+  'cockpit.title': {
+    en: 'RT_DISPATCH_COCKPIT // V3.2',
+    ar: 'لوحة التحكم اللوجستية // V3.2',
+  },
   'cockpit.tab_track': {
-    en: 'Track Waybill',
-    ar: 'تتبع بوليصة',
+    en: 'Track',
+    ar: 'تتبع الشحنات',
   },
   'cockpit.tab_rates': {
-    en: 'Rate Calculator',
+    en: 'Rates',
     ar: 'حاسبة الأسعار',
   },
   'cockpit.tab_linehauls': {
-    en: 'Linehaul Schedule',
-    ar: 'مواعيد رحلات الشحن',
+    en: 'Linehauls',
+    ar: 'رحلات الشحن',
+  },
+  'cockpit.track_badge': {
+    en: 'DIRECT LARAVEL DISPATCH QUERY',
+    ar: 'استعلام مباشر من نظام التوزيع',
+  },
+  'cockpit.track_title': {
+    en: 'Enter Lebanese Waybill',
+    ar: 'أدخل رقم البوليصة اللبنانية',
+  },
+  'cockpit.track_sub': {
+    en: 'Direct query to',
+    ar: 'استعلام مباشر عبر',
   },
   'cockpit.track_input_label': {
     en: 'ENTER WAYBILL / TRACKING NUMBER',
     ar: 'أدخل رقم البوليصة / التتبع',
+  },
+  'cockpit.track_input_placeholder': {
+    en: 'e.g. RT-8942-BEY',
+    ar: 'مثال: RT-8942-BEY',
+  },
+  'cockpit.track_submit': {
+    en: 'Query Tracking Servers',
+    ar: 'استعلام خوادم التتبع',
   },
   'cockpit.track_btn': {
     en: 'Query Waybill',
@@ -204,6 +292,26 @@ export const TRANSLATIONS: Translations = {
   'cockpit.sample_label': {
     en: 'Or test live tracking sample:',
     ar: 'أو جرّب أحد نماذج الشحنات الحية:',
+  },
+  'cockpit.track_sample_label': {
+    en: 'Or test sample live waybill:',
+    ar: 'أو جرّب نموذج شحنة حي:',
+  },
+  'cockpit.rates_badge': {
+    en: 'GUARANTEED FIXED FLAT RATES',
+    ar: 'أسعار ثابتة ومضمونة',
+  },
+  'cockpit.rates_title': {
+    en: 'Check Delivery Fee',
+    ar: 'حساب تكلفة التوصيل',
+  },
+  'cockpit.rates_sub': {
+    en: 'Choose recipient destination anywhere in Lebanon.',
+    ar: 'اختر قضاء الوجهة في أي مكان داخل لبنان.',
+  },
+  'cockpit.rates_label': {
+    en: 'Select Delivery Destination:',
+    ar: 'اختر وجهة التوصيل في لبنان:',
   },
   'cockpit.calc_select_label': {
     en: 'SELECT DESTINATION DISTRICT (26 LEBANESE DISTRICTS)',
@@ -217,17 +325,99 @@ export const TRANSLATIONS: Translations = {
     en: 'Cash collection, 3 delivery attempts & SMS updates included',
     ar: 'يشمل تحصيل الأموال، ٣ محاولات تسليم وتحديثات بالرسائل',
   },
+  'cockpit.rates_sla': {
+    en: 'Delivery SLA:',
+    ar: 'مدة التسليم المتوقعة:',
+  },
+  'cockpit.rates_sla_beirut': {
+    en: 'Same / Next Day',
+    ar: 'نفس اليوم / اليوم التالي',
+  },
+  'cockpit.rates_sla_lebanon': {
+    en: '24 - 48 Hours',
+    ar: '٢٤ إلى ٤٨ ساعة',
+  },
+  'cockpit.rates_cod': {
+    en: 'COD Cash Handling:',
+    ar: 'إدارة تحصيل الأموال:',
+  },
+  'cockpit.rates_cod_val': {
+    en: 'Included (Zero %)',
+    ar: 'مشمولة مجاناً (بدون عمولة)',
+  },
+  'cockpit.rates_open': {
+    en: 'Open Package Allowed:',
+    ar: 'معاينة الطرد عند الباب:',
+  },
+  'cockpit.rates_open_val': {
+    en: 'Upon Merchant Request',
+    ar: 'متاحة حسب طلب التاجر',
+  },
+  'cockpit.rates_btn': {
+    en: 'Book Delivery to',
+    ar: 'طلب توصيل إلى',
+  },
   'cockpit.calc_cta': {
     en: 'Dispatch Delivery to this District',
     ar: 'اطلب توصيلاً إلى هذا القضاء',
   },
+  'cockpit.linehauls_badge': {
+    en: 'CORNICHE EL NAHR DISPATCH HUB',
+    ar: 'محطة انطلاق كورنيش النهر',
+  },
   'cockpit.linehauls_title': {
-    en: 'DAILY SCHEDULED LINEHAUL DEPARTURES',
-    ar: 'مواعيد رحلات الربط اللوجستي اليومية من بيروت',
+    en: "Today's Linehaul Shuttles",
+    ar: 'رحلات الشحن المجدولة اليوم',
   },
   'cockpit.linehauls_sub': {
-    en: 'Departing from Corniche El Nahr Central Terminal',
-    ar: 'تنطلق يومياً من محطة كورنيش النهر المركزية في بيروت',
+    en: 'Scheduled regional vans departing from central Beirut.',
+    ar: 'فانات نقل تنطلق بانتظام من محطة بيروت المركزية.',
+  },
+  'cockpit.linehauls_note': {
+    en: 'Parcels received by 2:00 PM at Beirut hub dispatch same evening.',
+    ar: 'الطرود المستلمة قبل ٢:٠٠ ظهراً بمستودع بيروت تُشحن في نفس المساء.',
+  },
+  'cockpit.districts_linked': {
+    en: '26 Districts Linked',
+    ar: '٢٦ قضاءً متصلاً بالشبكة',
+  },
+  'cockpit.full_radar': {
+    en: 'Full Live Iframe',
+    ar: 'فتح رادار التتبع الكامل',
+  },
+
+  // Telemetry Stats Strip
+  'stats.sla_label': {
+    en: 'FIRST ATTEMPT SLA',
+    ar: 'نجاح التسليم من أول محاولة',
+  },
+  'stats.sla_sub': {
+    en: 'Direct phone contact prior to visit',
+    ar: 'اتصال هاتفي مسبق مع المستلم قبل الوصول',
+  },
+  'stats.beirut_label': {
+    en: 'BEIRUT METRO RATE',
+    ar: 'سعر التوصيل داخل بيروت',
+  },
+  'stats.beirut_sub': {
+    en: 'Zero fuel surcharge guarantee',
+    ar: 'ضمان عدم فرض أي رسوم محروقات إضافية',
+  },
+  'stats.reach_label': {
+    en: 'NATIONWIDE REACH',
+    ar: 'تغطية شاملة لكافة المناطق',
+  },
+  'stats.reach_sub': {
+    en: 'All 8 Lebanese Governorates',
+    ar: 'كافة المحافظات اللبنانية الـ ٨',
+  },
+  'stats.cod_label': {
+    en: 'COD DISBURSEMENT',
+    ar: 'تسليم أموال التحصيل',
+  },
+  'stats.cod_sub': {
+    en: 'Zero currency deduction loss',
+    ar: 'تحصيل بالدولار والليرة دون أي خصومات',
   },
 
   // Contact Page
