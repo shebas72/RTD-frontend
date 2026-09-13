@@ -219,30 +219,16 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-2.5 sm:gap-3 text-left group focus:outline-hidden py-1 cursor-pointer shrink-0"
             aria-label="RT Deliveries Home"
           >
-            <div className="relative p-1 rounded-xl bg-slate-900 border border-slate-800 group-hover:border-orange-500/50 transition-colors shadow-inner shrink-0">
+            <div className="relative p-1.5 rounded-xl bg-slate-900 border border-slate-800 group-hover:border-orange-500/50 transition-colors shadow-inner shrink-0">
               <img
                 src="/brand/rt-logo.png"
                 alt="RT Deliveries Lebanon"
-                className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-9 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = 'https://rtdeliveries.net/wp-content/uploads/2025/10/3-768x456.jpeg';
                 }}
               />
-            </div>
-
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-display font-black text-base sm:text-lg text-white tracking-tight leading-none group-hover:text-orange-400 transition-colors">
-                  ROAD TRAIN
-                </span>
-                <span className="px-1.5 py-0.2 rounded bg-orange-600 text-white text-[9px] font-mono-tech font-bold uppercase">
-                  SARL
-                </span>
-              </div>
-              <span className="text-[10px] text-slate-400 tracking-wider block font-mono-tech mt-0.5">
-                LEBANON EXPRESS COURIER
-              </span>
             </div>
           </button>
 
